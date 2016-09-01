@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AutoSound</string>
+    <string name="action_settings">Settings</string>
+    <string name="silent_switch_btn">Silent</string>
+    <string name="mute_media_btn">Mute Media</string>
+    <string name="set_trigger_btn_str">Set Trigger</string>
+    <string name="cancel_trigger_btn_str">Cancel Trigger</string>
+    <string name="update_trigger_btn_str">Update Trigger</string>
+</resources>
