@@ -6,4 +6,12 @@
     <string name="set_trigger_btn_str">Set Trigger</string>
     <string name="cancel_trigger_btn_str">Cancel Trigger</string>
     <string name="update_trigger_btn_str">Update Trigger</string>
+    <string name="repeat_switch_str">Repeat</string>
+    <string name="sunday_checkbox_str">S</string>
+    <string name="monday_checkbox_str">M</string>
+    <string name="tuesday_checkbox_str">T</string>
+    <string name="wednesday_checkbox_str">W</string>
+    <string name="thursday_checkbox_str">T</string>
+    <string name="friday_checkbox_str">F</string>
+    <string name="saturday_checkbox_str">S</string>
 </resources>

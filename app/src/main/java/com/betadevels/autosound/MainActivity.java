@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,8 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -35,107 +34,131 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        audioManager = (AudioManager) getSystemService( Context.AUDIO_SERVICE );
-        alarmManager = (AlarmManager) getSystemService( Context.ALARM_SERVICE );
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if( fab != null )
+        {
+            fab.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    Intent launchAddNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
+                    startActivity( launchAddNewTriggerIntent );
+                }
+            });
+        }
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         textView = (TextView) findViewById(R.id.textView);
 
         Button setTriggerButton = (Button)findViewById(R.id.set_trigger_btn);
-        setTriggerButton.setOnClickListener(new View.OnClickListener()
+
+        if( setTriggerButton != null )
         {
-            @Override
-            public void onClick(View v)
+            setTriggerButton.setOnClickListener(new View.OnClickListener()
             {
-                Intent intent = new Intent( getBaseContext(), AlarmReceiver.class );
-                PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-
-                Calendar cal = Calendar.getInstance();
-                // add 5 minutes to the calendar object
-                cal.add(Calendar.SECOND, 15);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-                Log.i(TAG, "onCreate: Trigger scheduled");
-                Snackbar.make( v, "Trigger scheduled", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                new CountDownTimer( 15000, 1000)
+                @Override
+                public void onClick(View v)
                 {
-                    @Override
-                    public void onTick(long millisUntilFinished)
-                    {
-                        textView.setText("seconds remaining: " + millisUntilFinished / 1000);
-                    }
+                    Intent intent = new Intent( getBaseContext(), AlarmReceiver.class );
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_UPDATE_CURRENT );
 
-                    @Override
-                    public void onFinish()
-                    {
-                        textView.setText("Done!");
-                    }
-                }.start();
-            }
-        });
+                    Calendar cal = Calendar.getInstance();
+                    // add 5 minutes to the calendar object
+                    cal.add(Calendar.SECOND, 15);
 
-        Button updateTriggerButton = (Button) findViewById( R.id.update_trigger_btn );
-        updateTriggerButton.setOnClickListener(new View.OnClickListener()
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                    Log.i(TAG, "onCreate: Trigger scheduled");
+                    Snackbar.make( v, "Trigger scheduled", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                    new CountDownTimer( 15000, 1000)
+                    {
+                        @Override
+                        public void onTick(long millisUntilFinished)
+                        {
+                            textView.setText("seconds remaining: " + millisUntilFinished / 1000);
+                        }
+
+                        @Override
+                        public void onFinish()
+                        {
+                            textView.setText("Done!");
+                        }
+                    }.start();
+                }
+            });
+        }
+
+        Button updateTriggerButton = (Button)findViewById( R.id.update_trigger_btn );
+        if( updateTriggerButton != null )
         {
-            @Override
-            public void onClick(View v)
+            updateTriggerButton.setOnClickListener(new View.OnClickListener()
             {
-                Intent intent = new Intent( getBaseContext(), AlarmReceiver.class );
-                PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-
-                Calendar cal = Calendar.getInstance();
-                // add 5 minutes to the calendar object
-                cal.add(Calendar.SECOND, 30);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-                Log.i(TAG, "onCreate: Trigger updated");
-                Snackbar.make( v, "Trigger updated", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                new CountDownTimer( 30000, 1000)
+                @Override
+                public void onClick(View v)
                 {
-                    @Override
-                    public void onTick(long millisUntilFinished)
-                    {
-                        textView.setText("seconds remaining: " + millisUntilFinished / 1000);
-                    }
+                    Intent intent = new Intent( getBaseContext(), AlarmReceiver.class );
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_UPDATE_CURRENT );
 
-                    @Override
-                    public void onFinish()
+                    Calendar cal = Calendar.getInstance();
+                    // add 5 minutes to the calendar object
+                    cal.add(Calendar.SECOND, 30);
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                    Log.i(TAG, "onCreate: Trigger updated");
+                    Snackbar.make( v, "Trigger updated", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                    new CountDownTimer( 30000, 1000)
                     {
-                        textView.setText("Done!");
-                    }
-                }.start();
-            }
-        });
+                        @Override
+                        public void onTick(long millisUntilFinished)
+                        {
+                            textView.setText("seconds remaining: " + millisUntilFinished / 1000);
+                        }
+
+                        @Override
+                        public void onFinish()
+                        {
+                            textView.setText("Done!");
+                        }
+                    }.start();
+                }
+            });
+        }
 
         Button cancelTriggerButton = (Button) findViewById( R.id.cancel_trigger_btn );
-        cancelTriggerButton.setOnClickListener(new View.OnClickListener()
+        if( cancelTriggerButton != null )
         {
-            @Override
-            public void onClick(View v)
+            cancelTriggerButton.setOnClickListener(new View.OnClickListener()
             {
-                Intent intent = new Intent( getBaseContext(), AlarmReceiver.class );
-                PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_CANCEL_CURRENT );
-
-                alarmManager.cancel( pendingIntent );
-                Log.i(TAG, "onCreate: Trigger cancelled");
-                Snackbar.make( v, "Trigger cancelled", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-                new CountDownTimer( 30000, 1000)
+                @Override
+                public void onClick(View v)
                 {
-                    @Override
-                    public void onTick(long millisUntilFinished)
-                    {
-                        textView.setText("seconds remaining: " + millisUntilFinished / 1000);
-                    }
+                    Intent intent = new Intent( getBaseContext(), AlarmReceiver.class );
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_CANCEL_CURRENT );
 
-                    @Override
-                    public void onFinish()
+                    alarmManager.cancel( pendingIntent );
+                    Log.i(TAG, "onCreate: Trigger cancelled");
+                    Snackbar.make( v, "Trigger cancelled", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                    new CountDownTimer( 30000, 1000)
                     {
-                        textView.setText("Done!");
-                    }
-                }.start();
-            }
-        });
+                        @Override
+                        public void onTick(long millisUntilFinished)
+                        {
+                            textView.setText("seconds remaining: " + millisUntilFinished / 1000);
+                        }
+
+                        @Override
+                        public void onFinish()
+                        {
+                            textView.setText("Done!");
+                        }
+                    }.start();
+                }
+            });
+        }
 
 
 //        Switch silentSwitch = (Switch) findViewById(R.id.silent_switch);
