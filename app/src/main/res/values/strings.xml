@@ -14,4 +14,6 @@
     <string name="thursday_checkbox_str">T</string>
     <string name="friday_checkbox_str">F</string>
     <string name="saturday_checkbox_str">S</string>
+    <string name="set_date_btn_str">Set Date</string>
+    <string name="set_time_btn_str">Set Time</string>
 </resources>
