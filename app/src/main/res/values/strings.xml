@@ -21,6 +21,8 @@
     <string name="ringer_mode_txt_str">Ringer Mode</string>
     <string name="ringer_mode_spnr_hint">Ringer Mode</string>
     <string name="ringer_volume_txt_str">Ringer Volume</string>
+    <string name="cancel_btn_str">Cancel</string>
+    <string name="create_btn_str">Create</string>
 
     <string-array name="ringer_modes">
         <item>Normal</item>

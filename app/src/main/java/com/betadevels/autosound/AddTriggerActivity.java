@@ -28,10 +28,19 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     private CheckBox[] weekDaysCheckBoxes = new CheckBox[7];
     private Button setDateButton;
     private Button setTimeButton;
+    private Button cancelButton;
+    private Button createButton;
     private Switch repeatSwitch;
     private Spinner ringerModeSpinner;
     private SeekBar ringerVolumeSeekBar;
     private TextView ringerVolumeText;
+
+    CalendarDatePickerDialogFragment datePicker;
+    RadialTimePickerDialogFragment timePicker;
+    private boolean isDateSet = false;
+    private boolean isTimeSet = false;
+    private int year, month, day, hourOfDay, minute;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,7 +50,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
 
         repeatSwitch = (Switch) findViewById( R.id.repeat_switch );
         boolean isChecked = false;
-        if (repeatSwitch != null)
+        if( repeatSwitch != null )
         {
             isChecked = repeatSwitch.isChecked();
             repeatSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
@@ -80,8 +89,11 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 @Override
                 public void onClick(View v)
                 {
-                    CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment();
-                    datePicker.setOnDateSetListener(AddTriggerActivity.this);
+                    if( datePicker == null )
+                    {
+                        datePicker = new CalendarDatePickerDialogFragment();
+                        datePicker.setOnDateSetListener(AddTriggerActivity.this);
+                    }
                     datePicker.show( getSupportFragmentManager(), DATE_PICKER_TAG );
                 }
             });
@@ -95,8 +107,11 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 @Override
                 public void onClick(View v)
                 {
-                    RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment();
-                    timePicker.setOnTimeSetListener(AddTriggerActivity.this);
+                    if( timePicker == null )
+                    {
+                        timePicker = new RadialTimePickerDialogFragment();
+                        timePicker.setOnTimeSetListener(AddTriggerActivity.this);
+                    }
                     timePicker.show(getSupportFragmentManager(), TIME_PICKER_TAG);
                 }
             });
@@ -137,6 +152,57 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
             ringerVolumeSeekBar.setVisibility(isNormalModeSelected ? View.VISIBLE : View.GONE);
             ringerVolumeText.setVisibility( isNormalModeSelected ? View.VISIBLE : View.GONE );
         }
+
+        createButton = (Button) findViewById( R.id.create_btn );
+        if( createButton != null )
+        {
+            createButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    boolean isFormValid = true;
+                    if( repeatSwitch.isChecked() )
+                    {
+                        int boxesChecked = 0;
+                        for( CheckBox checkBox : weekDaysCheckBoxes )
+                        {
+                            boxesChecked += checkBox.isChecked() ? 1 : 0;
+                        }
+
+                        if( boxesChecked == 0 )
+                        {
+                            Snackbar.make( weekDaysCheckBoxes[6], "Select day(s) for trigger!", Snackbar.LENGTH_INDEFINITE )
+                                    .setAction("Dismiss", new View.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(View v)
+                                        {
+                                            Log.i(TAG, "onClick: SnackBar clicked!");
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                    else if( !isDateSet )
+                    {
+                        isFormValid = false;
+                        setDateButton.setError( "Date not set" );
+                    }
+
+                    if( !isTimeSet )
+                    {
+                        isFormValid = false;
+                        setTimeButton.setError( "Time not set" );
+                    }
+
+                    if( isFormValid )
+                    {
+                        //TODO: Save the trigger in Database and set alarm for the trigger
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -144,10 +210,13 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     {
         String datePrint = "Year : " + year + " Month : " + monthOfYear + " Day : " + dayOfMonth;
         Log.i(TAG, "onDateSet: "+datePrint);
-        Snackbar.make( setDateButton, datePrint, Snackbar.LENGTH_SHORT )
-                .setAction("Action", null)
-                .show();
-        setDateButton.setText(dayOfMonth+"/"+monthOfYear+"/"+year);
+
+        setDateButton.setText(dayOfMonth + "/" + monthOfYear+"/"+year);
+        setDateButton.setError( null );
+        isDateSet = true;
+        this.year = year;
+        this.month = monthOfYear;
+        this.day = dayOfMonth;
     }
 
     @Override
@@ -155,10 +224,12 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     {
         String timePrint = hourOfDay + ":" + minute;
         Log.i(TAG, "onTimeSet: " + timePrint);
-        Snackbar.make( setTimeButton, timePrint, Snackbar.LENGTH_LONG )
-                .setAction("Action", null)
-                .show();
+
         setTimeButton.setText( timePrint );
+        setTimeButton.setError( null );
+        isTimeSet = true;
+        this.hourOfDay = hourOfDay;
+        this.minute = minute;
     }
 
     @Override

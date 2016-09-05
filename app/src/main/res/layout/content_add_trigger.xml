@@ -211,6 +211,31 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_btn_str"
+                android:id="@+id/cancel_btn"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_red_dark"
+                style="?android:buttonBarButtonStyle"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_btn_str"
+                android:id="@+id/create_btn"
+                android:layout_weight="1"
+                android:textColor="@android:color/holo_green_dark"
+                style="?android:buttonBarButtonStyle"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>
