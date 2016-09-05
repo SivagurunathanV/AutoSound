@@ -16,4 +16,16 @@
     <string name="saturday_checkbox_str">S</string>
     <string name="set_date_btn_str">Set Date</string>
     <string name="set_time_btn_str">Set Time</string>
+    <string name="media_volume_txt_str">Media Volume</string>
+    <string name="alarm_volume_txt_str">Alarm Volume</string>
+    <string name="ringer_mode_txt_str">Ringer Mode</string>
+    <string name="ringer_mode_spnr_hint">Ringer Mode</string>
+    <string name="ringer_volume_txt_str">Ringer Volume</string>
+
+    <string-array name="ringer_modes">
+        <item>Normal</item>
+        <item>Vibrate</item>
+        <item>Silent</item>
+    </string-array>
+
 </resources>

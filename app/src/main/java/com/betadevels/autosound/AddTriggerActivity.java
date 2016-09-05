@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.betadevels.autosound.layout.AutoSpaceFlowLayout;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
@@ -25,6 +29,9 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     private Button setDateButton;
     private Button setTimeButton;
     private Switch repeatSwitch;
+    private Spinner ringerModeSpinner;
+    private SeekBar ringerVolumeSeekBar;
+    private TextView ringerVolumeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,7 +81,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 public void onClick(View v)
                 {
                     CalendarDatePickerDialogFragment datePicker = new CalendarDatePickerDialogFragment();
-                    datePicker.setOnDateSetListener( AddTriggerActivity.this );
+                    datePicker.setOnDateSetListener(AddTriggerActivity.this);
                     datePicker.show( getSupportFragmentManager(), DATE_PICKER_TAG );
                 }
             });
@@ -89,10 +96,46 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 public void onClick(View v)
                 {
                     RadialTimePickerDialogFragment timePicker = new RadialTimePickerDialogFragment();
-                    timePicker.setOnTimeSetListener( AddTriggerActivity.this );
-                    timePicker.show( getSupportFragmentManager(), TIME_PICKER_TAG );
+                    timePicker.setOnTimeSetListener(AddTriggerActivity.this);
+                    timePicker.show(getSupportFragmentManager(), TIME_PICKER_TAG);
                 }
             });
+        }
+
+        ringerModeSpinner = (Spinner) findViewById( R.id.ringer_mode_spnr );
+        if( ringerModeSpinner != null )
+        {
+            ringerModeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    String selectedRingerMode = parent.getItemAtPosition( position ).toString();
+                    Log.i(TAG, "onItemSelected: Selected Ringer mode : " + selectedRingerMode);
+                    if( ringerVolumeSeekBar != null && ringerVolumeText != null )
+                    {
+                        boolean isNormalModeSelected = selectedRingerMode.equalsIgnoreCase("Normal");
+                        ringerVolumeSeekBar.setEnabled( isNormalModeSelected );
+                        ringerVolumeSeekBar.setVisibility(isNormalModeSelected ? View.VISIBLE : View.GONE);
+                        ringerVolumeText.setVisibility( isNormalModeSelected ? View.VISIBLE : View.GONE );
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent)
+                {
+                    //Nothing to do here!
+                }
+            });
+        }
+
+        ringerVolumeText = (TextView) findViewById( R.id.ringer_volume_txt );
+        ringerVolumeSeekBar = (SeekBar) findViewById( R.id.ringer_volume_skbar );
+        if( ringerVolumeSeekBar != null && ringerVolumeText != null )
+        {
+            boolean isNormalModeSelected = ringerModeSpinner.getSelectedItem().toString().equalsIgnoreCase("Normal");
+            ringerVolumeSeekBar.setEnabled( isNormalModeSelected );
+            ringerVolumeSeekBar.setVisibility(isNormalModeSelected ? View.VISIBLE : View.GONE);
+            ringerVolumeText.setVisibility( isNormalModeSelected ? View.VISIBLE : View.GONE );
         }
     }
 
