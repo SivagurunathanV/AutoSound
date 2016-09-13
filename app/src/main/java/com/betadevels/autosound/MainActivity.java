@@ -17,6 +17,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
+import com.betadevels.autosound.DAOs.Trigger;
+import com.betadevels.autosound.DAOs.TriggerInstance;
+import com.betadevels.autosound.resources.Constants;
 
 import java.util.Calendar;
 
@@ -31,6 +38,10 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Configuration dbConfiguration = new Configuration.Builder( this ).setDatabaseName( "AutoSound.db" ).addModelClasses(Trigger.class, TriggerInstance.class).create();
+        ActiveAndroid.initialize(dbConfiguration);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,7 +54,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View view)
                 {
                     Intent launchAddNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
-                    startActivity( launchAddNewTriggerIntent );
+                    startActivityForResult(launchAddNewTriggerIntent, Constants.ADD_TRIGGER_ACTIVITY_RC );
                 }
             });
         }
@@ -65,8 +76,22 @@ public class MainActivity extends AppCompatActivity
                     PendingIntent pendingIntent = PendingIntent.getBroadcast( getBaseContext(), 123321, intent, PendingIntent.FLAG_UPDATE_CURRENT );
 
                     Calendar cal = Calendar.getInstance();
-                    // add 5 minutes to the calendar object
+                    if( cal.get( Calendar.DAY_OF_WEEK ) > Calendar.MONDAY )
+                    {
+                        if( cal.get( Calendar.WEEK_OF_YEAR ) == cal.getActualMaximum( Calendar.WEEK_OF_YEAR ) )
+                        {
+                            cal.set( Calendar.WEEK_OF_YEAR, 1 );
+                            cal.add( Calendar.YEAR, 1 );
+                        }
+                        else
+                        {
+                            cal.add( Calendar.WEEK_OF_YEAR, 1 );
+                        }
+
+                    }
+                    cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                     cal.add(Calendar.SECOND, 15);
+                    Log.i(TAG, "onClick: MaxWeeks : " + cal.getActualMaximum(Calendar.WEEK_OF_MONTH));
 
                     alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
                     Log.i(TAG, "onCreate: Trigger scheduled");
@@ -225,5 +250,22 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if( requestCode == Constants.ADD_TRIGGER_ACTIVITY_RC )
+        {
+            if( resultCode == RESULT_OK )
+            {
+                Toast.makeText(MainActivity.this, "New Trigger created!", Toast.LENGTH_SHORT).show();
+            }
+            else if( resultCode == RESULT_CANCELED)
+            {
+                Log.i(TAG, "onActivityResult: New trigger creation cancelled!");
+            }
+        }
     }
 }

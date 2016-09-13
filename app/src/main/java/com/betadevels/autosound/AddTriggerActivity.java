@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.betadevels.autosound.DAOs.Trigger;
 import com.betadevels.autosound.layout.AutoSpaceFlowLayout;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
@@ -35,6 +36,8 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     private Switch repeatSwitch;
     private Spinner ringerModeSpinner;
     private SeekBar ringerVolumeSeekBar;
+    private SeekBar mediaVolumeSeekBar;
+    private SeekBar alarmVolumeSeekBar;
     private TextView ringerVolumeText;
 
     CalendarDatePickerDialogFragment datePicker;
@@ -49,6 +52,8 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trigger);
+
+        //TODO: Load saved data if any present
 
         repeatSwitch = (Switch) findViewById( R.id.repeat_switch );
         boolean isChecked = false;
@@ -65,8 +70,17 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                         if( checkBox != null )
                         {
                             checkBox.setEnabled( isChecked );
-                            setDateButton.setEnabled( !isChecked );
                         }
+                    }
+                    setDateButton.setEnabled( !isChecked );
+
+                    if( !isChecked )
+                    {
+                        autoSpaceFlowLayout.setBackground( null );
+                    }
+                    else
+                    {
+                        setDateButton.setError( null );
                     }
                 }
             });
@@ -147,6 +161,8 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
 
         ringerVolumeText = (TextView) findViewById( R.id.ringer_volume_txt );
         ringerVolumeSeekBar = (SeekBar) findViewById( R.id.ringer_volume_skbar );
+        mediaVolumeSeekBar = (SeekBar) findViewById( R.id.media_volume_skbar );
+        alarmVolumeSeekBar = (SeekBar) findViewById( R.id.alarm_volume_skbar );
         if( ringerVolumeSeekBar != null && ringerVolumeText != null )
         {
             boolean isNormalModeSelected = ringerModeSpinner.getSelectedItem().toString().equalsIgnoreCase("Normal");
@@ -211,8 +227,31 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
 
                     if( isFormValid )
                     {
-                        //TODO: Save the trigger in Database and set alarm for the trigger
+                        Trigger trigger = new Trigger( repeatSwitch.isChecked(), weekDaysCheckBoxes,
+                                year, month, day, hourOfDay, minute, ringerModeSpinner.getSelectedItem().toString(),
+                                ringerVolumeSeekBar.getProgress(), mediaVolumeSeekBar.getProgress(),
+                                alarmVolumeSeekBar.getProgress());
+                        trigger.save();
+
+                        //TODO: Create entry in TriggerInstance table and schedule alarm(s)
+
+                        setResult( RESULT_OK );
+                        finish();
                     }
+                }
+            });
+        }
+
+        cancelButton = (Button) findViewById( R.id.cancel_btn );
+        if( cancelButton != null )
+        {
+            cancelButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    setResult( RESULT_CANCELED );
+                    finish();
                 }
             });
         }
@@ -228,7 +267,8 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         setDateButton.setError( null );
         isDateSet = true;
         this.year = year;
-        this.month = monthOfYear;
+        //Joda DateTime expects month to be between 1 to 12
+        this.month = monthOfYear + 1;
         this.day = dayOfMonth;
     }
 
@@ -262,5 +302,12 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         {
             timePicker.setOnTimeSetListener( this );
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        //TODO: Save inputs
     }
 }

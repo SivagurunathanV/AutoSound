@@ -19,12 +19,12 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".AlarmReceiver"
-            android:process=":remote"/>
+        <receiver android:name=".AlarmReceiver" android:process=":remote"/>
 
-        <activity android:name=".AddTriggerActivity">
-        </activity>
+        <activity android:name=".AddTriggerActivity" />
+        <meta-data android:name="AA_MODELS"     android:value="com.betadevels.autosound.Trigger" />
+        <meta-data android:name="AA_DB_NAME"    android:value="AutoSound.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
     </application>
 
 </manifest>

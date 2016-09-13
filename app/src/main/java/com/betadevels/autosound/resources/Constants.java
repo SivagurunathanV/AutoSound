@@ -5,5 +5,7 @@ package com.betadevels.autosound.resources;
  */
 public class Constants
 {
-    public enum RingerMode { NORMAL, VIBRATE, SILENT }
+    public enum RingerMode { Normal, Vibrate, Silent}
+
+    public static final int ADD_TRIGGER_ACTIVITY_RC = 1111;
 }

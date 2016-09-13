@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.code-troopers.betterpickers:library:3.0.1'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'joda-time:joda-time:2.9.2'
 }

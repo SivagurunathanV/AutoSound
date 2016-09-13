@@ -20,7 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver
     {
         Log.i(TAG, "onCheckedChanged: Receiver start");
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
 
         //Issuing notification
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
