@@ -37,7 +37,10 @@
         <com.betadevels.autosound.layout.AutoSpaceFlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/days_week_group">
+            android:id="@+id/days_week_group"
+            android:paddingTop="1dp"
+            android:paddingStart="1dp"
+            android:paddingEnd="1dp">
 
             <CheckBox
                 android:layout_width="wrap_content"

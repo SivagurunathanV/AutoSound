@@ -1,6 +1,7 @@
 package com.betadevels.autosound;
 
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     private static final String TIME_PICKER_TAG = "TIME_PICKER_FRAGMENT";
     private static final String TAG = "AddTriggerActivity";
 
+    private AutoSpaceFlowLayout autoSpaceFlowLayout;
     private CheckBox[] weekDaysCheckBoxes = new CheckBox[7];
     private Button setDateButton;
     private Button setTimeButton;
@@ -70,7 +72,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
             });
         }
 
-        AutoSpaceFlowLayout autoSpaceFlowLayout = (AutoSpaceFlowLayout) findViewById( R.id.days_week_group );
+        autoSpaceFlowLayout = (AutoSpaceFlowLayout) findViewById( R.id.days_week_group );
         if (autoSpaceFlowLayout != null)
         {
             for( int i = 0; i < autoSpaceFlowLayout.getChildCount(); i++ )
@@ -172,6 +174,10 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
 
                         if( boxesChecked == 0 )
                         {
+                            if( autoSpaceFlowLayout != null )
+                            {
+                                autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.border_red_shape ) );
+                            }
                             Snackbar.make( weekDaysCheckBoxes[6], "Select day(s) for trigger!", Snackbar.LENGTH_INDEFINITE )
                                     .setAction("Dismiss", new View.OnClickListener()
                                     {
@@ -182,6 +188,13 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                                         }
                                     })
                                     .show();
+                        }
+                        else
+                        {
+                            if( autoSpaceFlowLayout != null )
+                            {
+                                autoSpaceFlowLayout.setBackground( null );
+                            }
                         }
                     }
                     else if( !isDateSet )
