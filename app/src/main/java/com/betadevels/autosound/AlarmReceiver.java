@@ -18,6 +18,7 @@ public class AlarmReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        //TODO: Get settings from intent's bundle extras
         Log.i(TAG, "onCheckedChanged: Receiver start");
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);

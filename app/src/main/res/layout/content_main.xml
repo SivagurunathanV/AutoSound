@@ -13,36 +13,12 @@
     tools:context="com.betadevels.autosound.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/set_trigger_btn_str"
-        android:id="@+id/set_trigger_btn"
-        android:layout_above="@+id/update_trigger_btn"
-        android:layout_centerHorizontal="true"/>
+    <ExpandableListView
+        android:id="@+id/expandableListView"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/update_trigger_btn_str"
-        android:id="@+id/update_trigger_btn"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel_trigger_btn_str"
-        android:id="@+id/cancel_trigger_btn"
-        android:layout_below="@+id/update_trigger_btn"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Timer"
-        android:id="@+id/textView"
-        android:layout_above="@+id/set_trigger_btn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="52dp"/>
 </RelativeLayout>

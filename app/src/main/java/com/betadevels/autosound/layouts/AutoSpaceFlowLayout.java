@@ -1,4 +1,4 @@
-package com.betadevels.autosound.layout;
+package com.betadevels.autosound.layouts;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -14,5 +14,5 @@ import com.activeandroid.annotation.Table;
 public class TriggerInstance extends Model
 {
     @Column( name = "trigger_id", notNull = true )
-    public String triggerId;
+    public long triggerId;
 }

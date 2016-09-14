@@ -34,7 +34,7 @@
 
         </LinearLayout>
 
-        <com.betadevels.autosound.layout.AutoSpaceFlowLayout
+        <com.betadevels.autosound.layouts.AutoSpaceFlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/days_week_group"
@@ -98,7 +98,7 @@
                 android:button="@null"
                 android:text="@string/saturday_checkbox_str" />
 
-        </com.betadevels.autosound.layout.AutoSpaceFlowLayout>
+        </com.betadevels.autosound.layouts.AutoSpaceFlowLayout>
 
         <LinearLayout
             android:orientation="horizontal"

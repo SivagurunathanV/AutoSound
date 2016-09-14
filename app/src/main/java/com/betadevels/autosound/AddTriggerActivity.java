@@ -16,7 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.betadevels.autosound.DAOs.Trigger;
-import com.betadevels.autosound.layout.AutoSpaceFlowLayout;
+import com.betadevels.autosound.layouts.AutoSpaceFlowLayout;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 
@@ -192,8 +192,9 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                         {
                             if( autoSpaceFlowLayout != null )
                             {
-                                autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.border_red_shape ) );
+                                autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.rounded_rect_border_red_shape) );
                             }
+                            isFormValid = false;
                             Snackbar.make( weekDaysCheckBoxes[6], "Select day(s) for trigger!", Snackbar.LENGTH_INDEFINITE )
                                     .setAction("Dismiss", new View.OnClickListener()
                                     {
@@ -205,12 +206,9 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                                     })
                                     .show();
                         }
-                        else
+                        else if( autoSpaceFlowLayout != null )
                         {
-                            if( autoSpaceFlowLayout != null )
-                            {
-                                autoSpaceFlowLayout.setBackground( null );
-                            }
+                            autoSpaceFlowLayout.setBackground( null );
                         }
                     }
                     else if( !isDateSet )
@@ -233,7 +231,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                                 alarmVolumeSeekBar.getProgress());
                         trigger.save();
 
-                        //TODO: Create entry in TriggerInstance table and schedule alarm(s)
+                        //TODO: Create entry(ies) in TriggerInstance table and schedule alarm(s)
 
                         setResult( RESULT_OK );
                         finish();
@@ -263,6 +261,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         String datePrint = "Year : " + year + " Month : " + monthOfYear + " Day : " + dayOfMonth;
         Log.i(TAG, "onDateSet: "+datePrint);
 
+        //TODO: Properly format text before setting to TextView
         setDateButton.setText(dayOfMonth + "/" + monthOfYear+"/"+year);
         setDateButton.setError( null );
         isDateSet = true;

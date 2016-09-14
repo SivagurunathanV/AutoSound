@@ -43,6 +43,8 @@ public class Trigger extends Model
     @Column( name = "alarm_volume", notNull = true)
     public int alarmVolume;
 
+    public Trigger() { }
+
     public Trigger( boolean isRepeat, CheckBox[] daysOfWeekCheckBoxes, int year, int month, int day,
                     int hour, int minute, String ringerMode, int ringerVolume, int mediaVolume,
                     int alarmVolume)
