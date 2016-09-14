@@ -13,11 +13,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/delete_trigger_btn"
         android:text="New Text"
         android:id="@+id/trigger_date_time_txt"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:clickable="false"/>
+        android:clickable="false" />
 
     <ImageButton
         android:id="@+id/delete_trigger_btn"
@@ -25,7 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="5dp"
         android:src="@android:drawable/ic_menu_delete"
         android:focusable="false"
         android:focusableInTouchMode="false"

@@ -18,11 +18,11 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
-import com.betadevels.autosound.DAOs.Trigger;
-import com.betadevels.autosound.DAOs.TriggerInstance;
+import com.betadevels.autosound.models.Trigger;
+import com.betadevels.autosound.models.TriggerInstance;
 import com.betadevels.autosound.adapters.CustomExpandableListAdapter;
 import com.betadevels.autosound.delegates.SwitcherDelegate;
-import com.betadevels.autosound.models.TriggerDAO;
+import com.betadevels.autosound.DAOs.TriggerDAO;
 import com.betadevels.autosound.resources.Constants;
 
 public class MainActivity extends AppCompatActivity implements SwitcherDelegate
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
     @Override
     public void deleteTrigger( long triggerId )
     {
-        Trigger.delete( Trigger.class, triggerId );
+        TriggerDAO.delete( triggerId );
         //TODO: Delete entries from TriggerInstance table and cancel corresponding alarm(s).
         expandableListAdapter.update(TriggerDAO.getAllTriggers());
         Toast.makeText( this, "Trigger deleted", Toast.LENGTH_SHORT ).show();

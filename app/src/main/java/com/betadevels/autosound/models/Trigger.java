@@ -1,4 +1,4 @@
-package com.betadevels.autosound.DAOs;
+package com.betadevels.autosound.models;
 
 import android.provider.BaseColumns;
 import android.widget.CheckBox;

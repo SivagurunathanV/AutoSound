@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.betadevels.autosound.DAOs.Trigger;
+import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.R;
 import com.betadevels.autosound.delegates.SwitcherDelegate;
 import com.betadevels.autosound.resources.Constants;
@@ -127,7 +127,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter
             @Override
             public void onClick(View v)
             {
-                switcherDelegate.deleteTrigger( triggerId );
+                switcherDelegate.deleteTrigger(triggerId );
             }
         });
 

@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.betadevels.autosound.DAOs.Trigger;
+import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.layouts.AutoSpaceFlowLayout;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;

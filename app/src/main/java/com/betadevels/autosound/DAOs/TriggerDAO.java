@@ -1,7 +1,7 @@
-package com.betadevels.autosound.models;
+package com.betadevels.autosound.DAOs;
 
 import com.activeandroid.query.Select;
-import com.betadevels.autosound.DAOs.Trigger;
+import com.betadevels.autosound.models.Trigger;
 
 import java.util.List;
 
@@ -14,5 +14,10 @@ public class TriggerDAO
     public static List<Trigger> getAllTriggers()
     {
         return new Select().from( Trigger.class ).execute();
+    }
+
+    public static void delete( long triggerId )
+    {
+        Trigger.delete( Trigger.class, triggerId );
     }
 }
