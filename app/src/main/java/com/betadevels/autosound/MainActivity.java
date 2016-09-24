@@ -7,31 +7,36 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.betadevels.autosound.adapters.TriggerCardsAdapter;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
-import com.betadevels.autosound.adapters.CustomExpandableListAdapter;
-import com.betadevels.autosound.delegates.SwitcherDelegate;
 import com.betadevels.autosound.DAOs.TriggerDAO;
 import com.betadevels.autosound.resources.Constants;
 
-public class MainActivity extends AppCompatActivity implements SwitcherDelegate
+import java.lang.ref.WeakReference;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
     AudioManager audioManager;
     AlarmManager alarmManager;
-    ExpandableListView expandableListView;
-    CustomExpandableListAdapter expandableListAdapter;
+    RecyclerView recyclerView;
+    TriggerCardsAdapter triggerCardsAdapter;
 
     static TextView textView;
     @Override
@@ -63,12 +68,17 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        expandableListAdapter = new CustomExpandableListAdapter( this, this, TriggerDAO.getAllTriggers() );
-
-        expandableListView = (ExpandableListView) findViewById( R.id.expandableListView );
-        if (expandableListView != null)
+        recyclerView = (RecyclerView) findViewById( R.id.recycler_view );
+        if (recyclerView != null)
         {
-            expandableListView.setAdapter( expandableListAdapter );
+            recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            triggerCardsAdapter = new TriggerCardsAdapter( this, new WeakReference<>(recyclerView), TriggerDAO.getAllTriggers());
+            recyclerView.setAdapter(triggerCardsAdapter);
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper( createHelperCallback() );
+            itemTouchHelper.attachToRecyclerView( recyclerView );
         }
 
 //        textView = (TextView) findViewById(R.id.textView);
@@ -270,7 +280,8 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
         {
             if( resultCode == RESULT_OK )
             {
-                expandableListAdapter.update( TriggerDAO.getAllTriggers() );
+                List<Trigger> triggers = TriggerDAO.getAllTriggers();
+                triggerCardsAdapter.insert( triggers, triggers.size() - 1 );
                 Toast.makeText(MainActivity.this, "New Trigger created!", Toast.LENGTH_SHORT).show();
             }
             else if( resultCode == RESULT_CANCELED )
@@ -280,12 +291,28 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
         }
     }
 
-    @Override
-    public void deleteTrigger( long triggerId )
+    private ItemTouchHelper.Callback createHelperCallback()
     {
-        TriggerDAO.delete( triggerId );
-        //TODO: Delete entries from TriggerInstance table and cancel corresponding alarm(s).
-        expandableListAdapter.update(TriggerDAO.getAllTriggers());
-        Toast.makeText( this, "Trigger deleted", Toast.LENGTH_SHORT ).show();
+
+        return new ItemTouchHelper.SimpleCallback( ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                                                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT )
+        {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
+            {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+            {
+                int adapterPosition = viewHolder.getAdapterPosition();
+
+                Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
+                Log.i(TAG, "onSwiped: Direction Swiped : " + direction);
+
+                triggerCardsAdapter.delete( adapterPosition );
+            }
+        };
     }
 }
