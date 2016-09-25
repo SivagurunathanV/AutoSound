@@ -30,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/repeat_switch_str"
+                android:textColor="@android:color/white"
                 android:id="@+id/repeat_switch"/>
 
         </LinearLayout>
@@ -225,8 +226,8 @@
                 android:text="@string/cancel_btn_str"
                 android:id="@+id/cancel_btn"
                 android:layout_weight="1"
-                android:textColor="@android:color/holo_red_dark"
-                style="?android:buttonBarButtonStyle"/>
+                android:layout_margin="2dp"
+                android:background="@color/colorPrimaryDark"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -234,8 +235,9 @@
                 android:text="@string/create_btn_str"
                 android:id="@+id/create_btn"
                 android:layout_weight="1"
-                android:textColor="@android:color/holo_green_dark"
-                style="?android:buttonBarButtonStyle"/>
+                android:layout_margin="2dp"
+                android:background="@color/colorPrimaryDark"
+                />
 
         </LinearLayout>
 
