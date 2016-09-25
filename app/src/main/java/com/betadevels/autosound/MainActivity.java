@@ -3,9 +3,15 @@ package com.betadevels.autosound;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -294,9 +300,22 @@ public class MainActivity extends AppCompatActivity
     private ItemTouchHelper.Callback createHelperCallback()
     {
 
-        return new ItemTouchHelper.SimpleCallback( ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                                                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT )
+        return new ItemTouchHelper.SimpleCallback( 0, ItemTouchHelper.LEFT )
         {
+            Drawable redBGDrawable;
+            Drawable deleteDrawable;
+            int deleteDrawableMargin;
+            boolean initiated;
+
+            private void init()
+            {
+                redBGDrawable = new ColorDrawable( Color.RED );
+                deleteDrawable = ContextCompat.getDrawable( MainActivity.this, android.R.drawable.ic_menu_delete );
+                deleteDrawable.setColorFilter( Color.WHITE, PorterDuff.Mode.SRC_ATOP );
+                deleteDrawableMargin = (int) MainActivity.this.getResources().getDimension(R.dimen.ic_delete_margin);
+                initiated = true;
+            }
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
             {
@@ -309,9 +328,47 @@ public class MainActivity extends AppCompatActivity
                 int adapterPosition = viewHolder.getAdapterPosition();
 
                 Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
-                Log.i(TAG, "onSwiped: Direction Swiped : " + direction);
-
                 triggerCardsAdapter.delete( adapterPosition );
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)
+            {
+                View itemView = viewHolder.itemView;
+
+                if( viewHolder.getAdapterPosition() == -1 )
+                {
+                    return;
+                }
+
+                if( !initiated )
+                {
+                    init();
+                }
+
+                if( dX < 0 )
+                {
+                    redBGDrawable.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                    redBGDrawable.draw(c);
+
+                    if( dX < -(deleteDrawableMargin - 1) )
+                    {
+                        int itemHeight = itemView.getBottom() - itemView.getTop();
+
+                        int intrinsicWidth = deleteDrawable.getIntrinsicWidth();
+                        int intrinsicHeight = deleteDrawable.getIntrinsicWidth();
+
+                        int deleteDrawableLeft = itemView.getRight() - deleteDrawableMargin - intrinsicWidth;
+                        int deleteDrawableRight = itemView.getRight() - deleteDrawableMargin;
+                        int deleteDrawableTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                        int deleteDrawableBottom = deleteDrawableTop + intrinsicHeight;
+
+                        deleteDrawable.setBounds(deleteDrawableLeft, deleteDrawableTop, deleteDrawableRight, deleteDrawableBottom);
+                        deleteDrawable.draw(c);
+                    }
+                }
+
+                super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
     }
