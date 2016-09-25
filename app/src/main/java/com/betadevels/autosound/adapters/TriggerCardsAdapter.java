@@ -40,6 +40,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         public TextView triggerDateTextView, triggerTimeTextView, ringerVolumeTextView;
         public LinearLayout triggerCardContentLayout;
         public ProgressBar ringerVolumePBar, mediaVolumePBar, alarmVolumePBar;
+        public View dividerIndicatorView;
 
         public TriggerCardViewHolder(View itemView)
         {
@@ -51,6 +52,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
             ringerVolumePBar = (ProgressBar) itemView.findViewById( R.id.ringer_volume_pbar );
             mediaVolumePBar = (ProgressBar) itemView.findViewById( R.id.media_volume_pbar );
             alarmVolumePBar = (ProgressBar) itemView.findViewById( R.id.alarm_volume_pbar );
+            dividerIndicatorView = itemView.findViewById( R.id.cards_divider_view );
         }
     }
 
@@ -65,6 +67,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
     {
         this.triggers = triggers;
         notifyItemInserted( position );
+        notifyItemChanged( position - 1 );
     }
 
     public void delete( int adapterPosition )
@@ -85,6 +88,11 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         triggers.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, getItemCount());
+
+        if( adapterPosition == getItemCount() )
+        {
+            notifyItemChanged( adapterPosition - 1 );
+        }
     }
 
     @Override
@@ -162,6 +170,15 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
                 notifyDataSetChanged();
             }
         });
+
+        if( position == getItemCount() - 1 )
+        {
+            holder.dividerIndicatorView.setVisibility( View.GONE );
+        }
+        else
+        {
+            holder.dividerIndicatorView.setVisibility( View.VISIBLE );
+        }
     }
 
     @Override
