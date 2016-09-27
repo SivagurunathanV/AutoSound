@@ -7,4 +7,6 @@
     <color name="colorWindowBackground">#000000</color>
     <color name="colorCardBackground">#000000</color>
     <color name="colorBackground">#303030</color>
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextSecondary">#bebebe</color>
 </resources>
