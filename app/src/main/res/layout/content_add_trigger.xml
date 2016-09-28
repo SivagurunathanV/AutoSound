@@ -49,7 +49,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:button="@null"
                 android:gravity="center"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/sunday_checkbox_str" />
 
             <CheckBox
@@ -58,7 +59,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:button="@null"
                 android:gravity="center"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/monday_checkbox_str" />
 
             <CheckBox
@@ -67,7 +69,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:gravity="center"
                 android:button="@null"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/tuesday_checkbox_str" />
 
             <CheckBox
@@ -76,7 +79,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:gravity="center"
                 android:button="@null"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/wednesday_checkbox_str" />
 
             <CheckBox
@@ -85,7 +89,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:gravity="center"
                 android:button="@null"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/thursday_checkbox_str" />
 
             <CheckBox
@@ -94,7 +99,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:gravity="center"
                 android:button="@null"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/friday_checkbox_str" />
 
             <CheckBox
@@ -103,7 +109,8 @@
                 android:background="@drawable/days_checkbox_bg"
                 android:gravity="center"
                 android:button="@null"
-                android:textColor="@color/colorTextPrimary"
+                android:enabled="false"
+                android:textColor="@color/checkbox_color_selector"
                 android:text="@string/saturday_checkbox_str" />
 
         </com.betadevels.autosound.layouts.AutoSpaceFlowLayout>
@@ -152,6 +159,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ringer_mode_spnr"
                 android:entries="@array/ringer_modes"
+                android:popupBackground="@color/colorPrimaryLight"
                 android:hint="@string/ringer_mode_spnr_hint"/>
 
         </LinearLayout>
