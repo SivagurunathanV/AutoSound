@@ -23,4 +23,9 @@ public class Utilities
             default: return result + "th";
         }
     }
+
+    public static int percentOf( int value, int percentage )
+    {
+        return ( value * percentage ) / 100;
+    }
 }

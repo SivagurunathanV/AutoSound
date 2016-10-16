@@ -1,5 +1,6 @@
 package com.betadevels.autosound.activities;
 
+import android.app.AlarmManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +15,13 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.betadevels.autosound.AlarmManagerHandler;
+import com.betadevels.autosound.DAOs.TriggerDAO;
+import com.betadevels.autosound.DAOs.TriggerInstanceDAO;
 import com.betadevels.autosound.R;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.layouts.AutoSpaceFlowLayout;
+import com.betadevels.autosound.models.TriggerInstance;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
@@ -43,6 +48,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     private SeekBar alarmVolumeSeekBar;
     private TextView ringerVolumeText;
 
+    AlarmManagerHandler alarmManagerHandler;
     CalendarDatePickerDialogFragment datePicker;
     RadialTimePickerDialogFragment timePicker;
     private boolean isDateSet = false;
@@ -57,6 +63,11 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         setContentView(R.layout.activity_add_trigger);
 
         //TODO: Load saved data if any present
+
+        if( alarmManagerHandler == null )
+        {
+            alarmManagerHandler = new AlarmManagerHandler( (AlarmManager)getSystemService( ALARM_SERVICE ), getBaseContext() );
+        }
 
         repeatSwitch = (Switch) findViewById( R.id.repeat_switch );
         boolean isChecked = false;
@@ -221,11 +232,12 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
 
                     if( isFormValid )
                     {
-                        Trigger trigger = new Trigger( repeatSwitch.isChecked(), weekDaysCheckBoxes,
-                                year, month, day, hourOfDay, minute, ringerModeSpinner.getSelectedItem().toString(),
-                                ringerVolumeSeekBar.getProgress(), mediaVolumeSeekBar.getProgress(),
-                                alarmVolumeSeekBar.getProgress());
-                        trigger.save();
+                        String ringerMode = ringerModeSpinner.getSelectedItem().toString();
+                        int ringerVolume = ringerVolumeSeekBar.getProgress();
+                        int mediaVolume = mediaVolumeSeekBar.getProgress();
+                        int alarmVolume = alarmVolumeSeekBar.getProgress();
+                        Trigger trigger = TriggerDAO.create( repeatSwitch.isChecked(), weekDaysCheckBoxes,
+                                year, month, day, hourOfDay, minute, ringerMode, ringerVolume, mediaVolume, alarmVolume);
 
                         //TODO: Create entry(ies) in TriggerInstance table and schedule alarm(s)
                         if( repeatSwitch.isChecked() )
@@ -234,7 +246,11 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                         }
                         else
                         {
-
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.set( year, month, day, hourOfDay, minute);
+                            TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
+                            alarmManagerHandler.setAlarm( triggerInstance.getId(), false, calendar, ringerMode, ringerVolume,
+                                    mediaVolume, alarmVolume);
                         }
 
                         setResult( RESULT_OK );
@@ -270,8 +286,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         setDateButton.setError( null );
         isDateSet = true;
         this.year = year;
-        //Joda DateTime expects month to be between 1 to 12
-        this.month = monthOfYear + 1;
+        this.month = monthOfYear;
         this.day = dayOfMonth;
     }
 
