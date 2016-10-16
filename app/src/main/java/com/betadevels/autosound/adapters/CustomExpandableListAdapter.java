@@ -118,7 +118,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter
             dateTime.append( simpleDateFormat.format( trigger.triggerDateTime ) );
         }
 
-        TextView triggerDateTimeTextView = (TextView) convertView.findViewById( R.id.trigger_date_time_txt );
+        TextView triggerDateTimeTextView = (TextView) convertView.findViewById( R.id.trigger_date_txt);
         triggerDateTimeTextView.setText( dateTime.toString() );
 
         ImageButton deleteTriggerButton = (ImageButton) convertView.findViewById( R.id.delete_trigger_btn );

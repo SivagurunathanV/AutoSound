@@ -1,37 +1,44 @@
-package com.betadevels.autosound;
+package com.betadevels.autosound.activities;
 
-import android.app.AlarmManager;
-import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.betadevels.autosound.R;
+import com.betadevels.autosound.adapters.TriggerCardsAdapter;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
-import com.betadevels.autosound.adapters.CustomExpandableListAdapter;
-import com.betadevels.autosound.delegates.SwitcherDelegate;
 import com.betadevels.autosound.DAOs.TriggerDAO;
 import com.betadevels.autosound.resources.Constants;
 
-public class MainActivity extends AppCompatActivity implements SwitcherDelegate
+import java.lang.ref.WeakReference;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
-    AudioManager audioManager;
-    AlarmManager alarmManager;
-    ExpandableListView expandableListView;
-    CustomExpandableListAdapter expandableListAdapter;
+    RecyclerView recyclerView;
+    TriggerCardsAdapter triggerCardsAdapter;
 
     static TextView textView;
     @Override
@@ -60,15 +67,17 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
             });
         }
 
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        expandableListAdapter = new CustomExpandableListAdapter( this, this, TriggerDAO.getAllTriggers() );
-
-        expandableListView = (ExpandableListView) findViewById( R.id.expandableListView );
-        if (expandableListView != null)
+        recyclerView = (RecyclerView) findViewById( R.id.recycler_view );
+        if (recyclerView != null)
         {
-            expandableListView.setAdapter( expandableListAdapter );
+            recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            triggerCardsAdapter = new TriggerCardsAdapter( this, new WeakReference<>(recyclerView), TriggerDAO.getAllTriggers());
+            recyclerView.setAdapter(triggerCardsAdapter);
+
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper( createHelperCallback() );
+            itemTouchHelper.attachToRecyclerView( recyclerView );
         }
 
 //        textView = (TextView) findViewById(R.id.textView);
@@ -270,7 +279,8 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
         {
             if( resultCode == RESULT_OK )
             {
-                expandableListAdapter.update( TriggerDAO.getAllTriggers() );
+                List<Trigger> triggers = TriggerDAO.getAllTriggers();
+                triggerCardsAdapter.insert( triggers, triggers.size() - 1 );
                 Toast.makeText(MainActivity.this, "New Trigger created!", Toast.LENGTH_SHORT).show();
             }
             else if( resultCode == RESULT_CANCELED )
@@ -280,12 +290,80 @@ public class MainActivity extends AppCompatActivity implements SwitcherDelegate
         }
     }
 
-    @Override
-    public void deleteTrigger( long triggerId )
+    private ItemTouchHelper.Callback createHelperCallback()
     {
-        TriggerDAO.delete( triggerId );
-        //TODO: Delete entries from TriggerInstance table and cancel corresponding alarm(s).
-        expandableListAdapter.update(TriggerDAO.getAllTriggers());
-        Toast.makeText( this, "Trigger deleted", Toast.LENGTH_SHORT ).show();
+
+        return new ItemTouchHelper.SimpleCallback( 0, ItemTouchHelper.LEFT )
+        {
+            Drawable redBGDrawable;
+            Drawable deleteDrawable;
+            int deleteDrawableMargin;
+            boolean initiated;
+
+            private void init()
+            {
+                redBGDrawable = new ColorDrawable( Color.RED );
+                deleteDrawable = ContextCompat.getDrawable( MainActivity.this, android.R.drawable.ic_menu_delete );
+                deleteDrawable.setColorFilter( Color.WHITE, PorterDuff.Mode.SRC_ATOP );
+                deleteDrawableMargin = (int) MainActivity.this.getResources().getDimension(R.dimen.ic_delete_margin);
+                initiated = true;
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
+            {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+            {
+                int adapterPosition = viewHolder.getAdapterPosition();
+
+                Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
+                triggerCardsAdapter.delete( adapterPosition );
+                Toast.makeText(MainActivity.this, "Trigger deleted!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive)
+            {
+                View itemView = viewHolder.itemView;
+
+                if( viewHolder.getAdapterPosition() == -1 )
+                {
+                    return;
+                }
+
+                if( !initiated )
+                {
+                    init();
+                }
+
+                if( dX < 0 )
+                {
+                    redBGDrawable.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                    redBGDrawable.draw(c);
+
+                    if( dX < -(deleteDrawableMargin - 1) )
+                    {
+                        int itemHeight = itemView.getBottom() - itemView.getTop();
+
+                        int intrinsicWidth = deleteDrawable.getIntrinsicWidth();
+                        int intrinsicHeight = deleteDrawable.getIntrinsicWidth();
+
+                        int deleteDrawableLeft = itemView.getRight() - deleteDrawableMargin - intrinsicWidth;
+                        int deleteDrawableRight = itemView.getRight() - deleteDrawableMargin;
+                        int deleteDrawableTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                        int deleteDrawableBottom = deleteDrawableTop + intrinsicHeight;
+
+                        deleteDrawable.setBounds(deleteDrawableLeft, deleteDrawableTop, deleteDrawableRight, deleteDrawableBottom);
+                        deleteDrawable.draw(c);
+                    }
+                }
+
+                super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
     }
 }

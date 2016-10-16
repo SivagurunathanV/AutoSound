@@ -23,6 +23,9 @@
     <string name="ringer_volume_txt_str">Ringer Volume</string>
     <string name="cancel_btn_str">Cancel</string>
     <string name="create_btn_str">Create</string>
+    <string name="alarm_volume_txt">Alarm Volume</string>
+    <string name="media_volume_txt">Media Volume</string>
+    <string name="ringer_volume_txt">Ringer Volume</string>
 
     <string-array name="ringer_modes">
         <item>Normal</item>
