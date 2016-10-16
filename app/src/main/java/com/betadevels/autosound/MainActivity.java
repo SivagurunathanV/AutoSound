@@ -329,6 +329,7 @@ public class MainActivity extends AppCompatActivity
 
                 Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
                 triggerCardsAdapter.delete( adapterPosition );
+                Toast.makeText(MainActivity.this, "Trigger deleted!", Toast.LENGTH_SHORT).show();
             }
 
             @Override

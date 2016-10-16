@@ -67,11 +67,11 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
     {
         this.triggers = triggers;
         notifyItemInserted( position );
-        notifyItemChanged( position - 1 );
     }
 
     public void delete( int adapterPosition )
     {
+        //Updating the expandedPosition according to card deletion.
         if( expandedPosition > -1 )
         {
             if( expandedPosition == adapterPosition )
@@ -88,11 +88,6 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         triggers.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, getItemCount());
-
-        if( adapterPosition == getItemCount() )
-        {
-            notifyItemChanged( adapterPosition - 1 );
-        }
     }
 
     @Override
@@ -170,15 +165,6 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
                 notifyDataSetChanged();
             }
         });
-
-        if( position == getItemCount() - 1 )
-        {
-            holder.dividerIndicatorView.setVisibility( View.GONE );
-        }
-        else
-        {
-            holder.dividerIndicatorView.setVisibility( View.VISIBLE );
-        }
     }
 
     @Override
@@ -187,6 +173,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         return triggers.size();
     }
 
+    //VERY IMPORTANT. Without this, card expansion goes crazy!
     @Override
     public int getItemViewType(int position)
     {
