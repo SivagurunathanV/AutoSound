@@ -1,6 +1,5 @@
-package com.betadevels.autosound;
+package com.betadevels.autosound.activities;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,10 +14,14 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.betadevels.autosound.R;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.layouts.AutoSpaceFlowLayout;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
+
+import java.util.Calendar;
 
 public class AddTriggerActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener,
         RadialTimePickerDialogFragment.OnTimeSetListener
@@ -107,7 +110,10 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 {
                     if( datePicker == null )
                     {
+                        Calendar endRange = Calendar.getInstance();
+                        endRange.add( Calendar.YEAR, 1 );
                         datePicker = new CalendarDatePickerDialogFragment();
+                        datePicker.setDateRange( new MonthAdapter.CalendarDay(Calendar.getInstance() ), new MonthAdapter.CalendarDay( endRange ) );
                         datePicker.setOnDateSetListener(AddTriggerActivity.this);
                     }
                     datePicker.show( getSupportFragmentManager(), DATE_PICKER_TAG );
@@ -195,16 +201,6 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                                 autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.rounded_rect_border_red_shape) );
                             }
                             isFormValid = false;
-                            Snackbar.make( weekDaysCheckBoxes[6], "Select day(s) for trigger!", Snackbar.LENGTH_INDEFINITE )
-                                    .setAction("Dismiss", new View.OnClickListener()
-                                    {
-                                        @Override
-                                        public void onClick(View v)
-                                        {
-                                            Log.i(TAG, "onClick: SnackBar clicked!");
-                                        }
-                                    })
-                                    .show();
                         }
                         else if( autoSpaceFlowLayout != null )
                         {
@@ -232,6 +228,14 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                         trigger.save();
 
                         //TODO: Create entry(ies) in TriggerInstance table and schedule alarm(s)
+                        if( repeatSwitch.isChecked() )
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
 
                         setResult( RESULT_OK );
                         finish();

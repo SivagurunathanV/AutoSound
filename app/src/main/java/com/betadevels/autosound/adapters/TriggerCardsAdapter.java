@@ -85,6 +85,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         }
         Log.i(TAG, "onClick: ExpandedPosition : " + expandedPosition);
         TriggerDAO.delete(triggers.get(adapterPosition).getId());
+        //TODO: Delete corresponding entry(ies) from TriggerInstance
         triggers.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, getItemCount());

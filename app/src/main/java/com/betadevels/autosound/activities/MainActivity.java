@@ -1,14 +1,11 @@
-package com.betadevels.autosound;
+package com.betadevels.autosound.activities;
 
-import android.app.AlarmManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +24,7 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.betadevels.autosound.R;
 import com.betadevels.autosound.adapters.TriggerCardsAdapter;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
@@ -39,8 +37,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
-    AudioManager audioManager;
-    AlarmManager alarmManager;
     RecyclerView recyclerView;
     TriggerCardsAdapter triggerCardsAdapter;
 
@@ -70,9 +66,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         recyclerView = (RecyclerView) findViewById( R.id.recycler_view );
         if (recyclerView != null)
