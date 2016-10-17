@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/trigger_card_header_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="New Text"
+            android:id="@+id/notification_title_txt"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="New Text"
+            android:id="@+id/notification_content_txt"
+            android:textSize="14sp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/trigger_card_content_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/trigger_card_header_layout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/ringer_volume_txt"
+            android:id="@+id/ringer_volume_tv"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ringer_volume_pbar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/media_volume_txt"
+            android:id="@+id/media_volume_tv"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/media_volume_pbar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/alarm_volume_txt"
+            android:id="@+id/alarm_volume_tv"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/alarm_volume_pbar" />
+
+    </LinearLayout>
+
+</RelativeLayout>
