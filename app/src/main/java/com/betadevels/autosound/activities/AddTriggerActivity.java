@@ -249,7 +249,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                             Calendar calendar = Calendar.getInstance();
                             calendar.set( year, month, day, hourOfDay, minute);
                             TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
-                            alarmManagerHandler.setAlarm( triggerInstance.getId(), false, calendar, ringerMode, ringerVolume,
+                            alarmManagerHandler.setAlarm( triggerInstance.getId().intValue(), false, calendar, ringerMode, ringerVolume,
                                     mediaVolume, alarmVolume);
                         }
 

@@ -24,14 +24,14 @@ public class AlarmManagerHandler
         this.baseContext = baseContext;
     }
 
-    public void setAlarm(long requestCode, boolean isRepeat, Calendar calendar, String ringerMode, int ringerVolume, int mediaVolume,
+    public void setAlarm(int requestCode, boolean isRepeat, Calendar calendar, String ringerMode, int ringerVolume, int mediaVolume,
                                 int alarmVolume)
     {
         Intent intent = new Intent( baseContext, AlarmReceiver.class );
         intent.putExtra( Constants.RINGER_MODE_BUNDLE_NAME, ringerMode );
         intent.putExtra( Constants.VOLUMES_BUNDLE_NAME, new int[]{ ringerVolume, mediaVolume, alarmVolume } );
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast( baseContext, (int) requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast( baseContext, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT );
 
         if( isRepeat )
         {

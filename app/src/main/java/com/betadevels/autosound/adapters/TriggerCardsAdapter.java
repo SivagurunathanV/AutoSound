@@ -1,5 +1,6 @@
 package com.betadevels.autosound.adapters;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.betadevels.autosound.AlarmManagerHandler;
 import com.betadevels.autosound.DAOs.TriggerDAO;
+import com.betadevels.autosound.DAOs.TriggerInstanceDAO;
 import com.betadevels.autosound.R;
 import com.betadevels.autosound.models.Trigger;
+import com.betadevels.autosound.models.TriggerInstance;
 import com.betadevels.autosound.resources.Constants;
 import com.betadevels.autosound.resources.Utilities;
 
@@ -30,7 +34,7 @@ import java.util.List;
 public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapter.TriggerCardViewHolder>
 {
     private static final String TAG = "TriggerCardsAdapter";
-    private Context context;
+    private AlarmManagerHandler alarmManagerHandler;
     private WeakReference<RecyclerView> recyclerViewWeakReference;
     private List<Trigger> triggers;
     private int expandedPosition = -1;
@@ -58,7 +62,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
 
     public TriggerCardsAdapter(Context context, WeakReference<RecyclerView> recyclerViewWeakReference, List<Trigger> triggers)
     {
-        this.context = context;
+        this.alarmManagerHandler = new AlarmManagerHandler( (AlarmManager) context.getSystemService( Context.ALARM_SERVICE ), context );
         this.recyclerViewWeakReference = recyclerViewWeakReference;
         this.triggers = triggers;
     }
@@ -84,9 +88,21 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
             }
         }
         Log.i(TAG, "onClick: ExpandedPosition : " + expandedPosition);
-        TriggerDAO.delete(triggers.get(adapterPosition).getId());
-        //TODO: Delete corresponding entry(ies) from TriggerInstance
+
+        Long triggerId = triggers.get(adapterPosition).getId();
+        TriggerDAO.delete( triggerId );
+        List<TriggerInstance> triggerInstances = TriggerInstanceDAO.getAllTriggerInstances(triggerId);
+        if( alarmManagerHandler != null )
+        {
+            for( TriggerInstance triggerInstance : triggerInstances )
+            {
+                Log.i(TAG, "delete: Removing triggerInstance : " + triggerInstance.triggerId + " - " + triggerInstance.getId());
+                alarmManagerHandler.cancelAlarm( triggerInstance.getId().intValue() );
+                TriggerInstanceDAO.delete( triggerInstance.getId() );
+            }
+        }
         triggers.remove(adapterPosition);
+
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, getItemCount());
     }
