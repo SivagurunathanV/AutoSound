@@ -41,7 +41,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
 
     public class TriggerCardViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView triggerDateTextView, triggerTimeTextView, ringerVolumeTextView;
+        public TextView triggerDateTextView, triggerTimeTextView, ringerModeTextView,ringerVolumeTextView;
         public LinearLayout triggerCardContentLayout;
         public ProgressBar ringerVolumePBar, mediaVolumePBar, alarmVolumePBar;
         public View dividerIndicatorView;
@@ -51,6 +51,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
             super(itemView);
             triggerDateTextView = (TextView) itemView.findViewById( R.id.trigger_date_txt);
             triggerTimeTextView = (TextView) itemView.findViewById( R.id.trigger_time_txt);
+            ringerModeTextView = (TextView) itemView.findViewById( R.id.ringer_mode_txt );
             ringerVolumeTextView = (TextView) itemView.findViewById( R.id.ringer_volume_tv );
             triggerCardContentLayout = (LinearLayout) itemView.findViewById( R.id.trigger_card_content_layout );
             ringerVolumePBar = (ProgressBar) itemView.findViewById( R.id.ringer_volume_pbar );
@@ -149,7 +150,8 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         }
 
         holder.triggerDateTextView.setText( date.toString() );
-        holder.triggerTimeTextView.setText(time.toString());
+        holder.triggerTimeTextView.setText( time.toString() );
+        holder.ringerModeTextView.setText( trigger.ringerMode.toString() );
 
         if( trigger.ringerMode == Constants.RingerMode.Normal )
         {

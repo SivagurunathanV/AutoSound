@@ -26,6 +26,7 @@
     <string name="alarm_volume_txt">Alarm Volume</string>
     <string name="media_volume_txt">Media Volume</string>
     <string name="ringer_volume_txt">Ringer Volume</string>
+    <string name="separator_txt_str"> .</string>
 
     <string-array name="ringer_modes">
         <item>Normal</item>

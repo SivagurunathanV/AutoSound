@@ -26,6 +26,8 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 
+import org.joda.time.LocalDateTime;
+
 import java.util.Calendar;
 
 public class AddTriggerActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener,
@@ -239,10 +241,38 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                         Trigger trigger = TriggerDAO.create( repeatSwitch.isChecked(), weekDaysCheckBoxes,
                                 year, month, day, hourOfDay, minute, ringerMode, ringerVolume, mediaVolume, alarmVolume);
 
-                        //TODO: Create entry(ies) in TriggerInstance table and schedule alarm(s)
                         if( repeatSwitch.isChecked() )
                         {
+                            for( int i = 0; i < weekDaysCheckBoxes.length; i++ )
+                            {
+                                if( weekDaysCheckBoxes[i].isChecked() )
+                                {
+                                    Calendar calendar = Calendar.getInstance();
 
+                                    //If the day has already past this week, then schedule it from
+                                    //next week.
+                                    if( calendar.get( Calendar.DAY_OF_WEEK ) > i + 1 )
+                                    {
+                                        calendar.add( Calendar.WEEK_OF_YEAR, 1 );
+                                    }
+
+                                    calendar.set( Calendar.DAY_OF_WEEK, i + 1 );
+                                    calendar.set( Calendar.HOUR_OF_DAY, hourOfDay );
+                                    calendar.set( Calendar.MINUTE, minute );
+
+                                    //If the day is today but the time has past, then schedule it
+                                    //from next week.
+                                    if( calendar.compareTo( Calendar.getInstance() ) < 0 )
+                                    {
+                                        calendar.add( Calendar.WEEK_OF_YEAR, 1 );
+                                    }
+
+                                    Log.i(TAG, "onClick: Setting alarm for Calendar : " + new LocalDateTime( calendar ).toString());
+                                    TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
+                                    alarmManagerHandler.setAlarm( triggerInstance.getId().intValue(), true, calendar,
+                                            ringerMode, ringerVolume, mediaVolume, alarmVolume );
+                                }
+                            }
                         }
                         else
                         {
@@ -278,11 +308,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     @Override
     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth)
     {
-        String datePrint = "Year : " + year + " Month : " + monthOfYear + " Day : " + dayOfMonth;
-        Log.i(TAG, "onDateSet: "+datePrint);
-
-        //TODO: Properly format text before setting to TextView
-        setDateButton.setText(dayOfMonth + "/" + monthOfYear+"/"+year);
+        setDateButton.setText( dayOfMonth + "/" + ( monthOfYear + 1 ) + "/" + year );
         setDateButton.setError( null );
         isDateSet = true;
         this.year = year;
@@ -294,8 +320,6 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
     public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute)
     {
         String timePrint = hourOfDay + ":" + minute;
-        Log.i(TAG, "onTimeSet: " + timePrint);
-
         setTimeButton.setText( timePrint );
         setTimeButton.setError( null );
         isTimeSet = true;

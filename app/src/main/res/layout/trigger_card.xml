@@ -18,20 +18,21 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="New Text"
+                android:id="@+id/trigger_date_txt"
+                android:textColor="@color/colorTextPrimary"
+                android:layout_marginBottom="5dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/trigger_card_header_layout">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="New Text"
-                    android:id="@+id/trigger_date_txt"
-                    android:textColor="@color/colorTextPrimary"
-                    android:layout_marginBottom="5dp"/>
+                android:orientation="horizontal"
+                android:id="@+id/trigger_card_header_layout"
+                android:layout_below="@+id/trigger_date_txt">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -39,7 +40,27 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="New Text"
                     android:id="@+id/trigger_time_txt"
+                    android:paddingEnd="2dp"
                     android:textSize="@dimen/bp_material_button_textsize"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/separator_txt_str"
+                    android:id="@+id/separator_txt"
+                    android:paddingEnd="2dp"
+                    android:textSize="@dimen/bp_material_button_textsize"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="New Text"
+                    android:id="@+id/ringer_mode_txt"
+                    android:paddingStart="2dp"
+                    android:textSize="@dimen/bp_material_button_textsize"
+                    android:textColor="@color/colorAccent"/>
 
             </LinearLayout>
 
