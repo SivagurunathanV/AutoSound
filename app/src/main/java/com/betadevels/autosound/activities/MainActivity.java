@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
                         int intrinsicWidth = deleteDrawable.getIntrinsicWidth();
                         int intrinsicHeight = deleteDrawable.getIntrinsicWidth();
 
-                        int deleteDrawableLeft = itemView.getRight() - deleteDrawableMargin - intrinsicWidth;
+                        int deleteDrawableLeft = itemView.getRight() + Math.max( -(deleteDrawableMargin + intrinsicWidth), (int) dX );
                         int deleteDrawableRight = itemView.getRight() - deleteDrawableMargin;
                         int deleteDrawableTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
                         int deleteDrawableBottom = deleteDrawableTop + intrinsicHeight;
