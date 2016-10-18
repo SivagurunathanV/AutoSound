@@ -1,5 +1,6 @@
 package com.betadevels.autosound.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     RecyclerView recyclerView;
     TriggerCardsAdapter triggerCardsAdapter;
+    AlertDialog alertDialog;
+    int deleteTriggerPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,6 +70,11 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
+        if( alertDialog == null )
+        {
+            initAlertDialog();
+        }
+
         recyclerView = (RecyclerView) findViewById( R.id.recycler_view );
         if (recyclerView != null)
         {
@@ -83,8 +92,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //TODO: Add menu item for preferences/settings
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -155,8 +164,8 @@ public class MainActivity extends AppCompatActivity
                 int adapterPosition = viewHolder.getAdapterPosition();
 
                 Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
-                triggerCardsAdapter.delete( adapterPosition );
-                Toast.makeText(MainActivity.this, "Trigger deleted!", Toast.LENGTH_SHORT).show();
+                deleteTriggerPosition = adapterPosition;
+                alertDialog.show();
             }
 
             @Override
@@ -199,5 +208,55 @@ public class MainActivity extends AppCompatActivity
                 super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
+    }
+
+    private void initAlertDialog()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setTitle( "Delete Trigger" )
+                .setMessage( "Are you sure?" )
+                .setIcon( android.R.drawable.ic_menu_delete )
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        triggerCardsAdapter.delete( deleteTriggerPosition );
+                        Toast.makeText(MainActivity.this, "Trigger deleted!", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener()
+                {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface)
+                    {
+                        triggerCardsAdapter.notifyItemChanged( deleteTriggerPosition );
+                    }
+                });
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.setOnShowListener(
+            new DialogInterface.OnShowListener()
+            {
+                @Override
+                public void onShow(DialogInterface dialogInterface)
+                {
+                    Log.i(TAG, "onShow: OnShowListener");
+                    Window window = alertDialog.getWindow();
+                    if( window != null )
+                    {
+                        window.setBackgroundDrawableResource( R.color.colorBackground );
+                    }
+                }
+            }
+        );
     }
 }

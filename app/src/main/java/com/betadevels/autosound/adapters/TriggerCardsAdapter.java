@@ -144,8 +144,11 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         else
         {
             LocalDateTime localDateTime = new LocalDateTime( trigger.triggerDateTime );
-            date.append( localDateTime.toString( "EEEE, MMMM" ) ).append( " " )
-                    .append(Utilities.attachSuperscriptToNumber(localDateTime.getDayOfMonth()));
+            date.append( localDateTime.toString( "EEEE, MMMM" ) )
+                .append( " " )
+                .append( Utilities.attachSuperscriptToNumber(localDateTime.getDayOfMonth()) )
+                .append( ", " )
+                .append( localDateTime.getYear() );
             time.append(localDateTime.toString("hh:mm a").toUpperCase());
         }
 

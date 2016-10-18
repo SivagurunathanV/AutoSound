@@ -1,8 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -10,8 +8,7 @@
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="android:textColorPrimary">@color/colorTextPrimary</item>
         <item name="android:textColorSecondary">@color/colorTextSecondary</item>
-        <!--<item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>-->
-        <!--<item name="android:spinnerItemStyle">@style/mySpinnerItemStyle</item>-->
+        <item name="android:textColorTertiary">@color/colorTextDisabled</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,9 +19,5 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <!--<style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">-->
-        <!--<item name="android:textColor">@color/colorTextSecondary</item>-->
-    <!--</style>-->
 
 </resources>
