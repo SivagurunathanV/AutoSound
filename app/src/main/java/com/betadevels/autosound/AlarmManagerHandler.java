@@ -27,7 +27,7 @@ public class AlarmManagerHandler
     public void setAlarm(int requestCode, boolean isRepeat, Calendar calendar, String ringerMode, int ringerVolume, int mediaVolume,
                                 int alarmVolume)
     {
-        Intent intent = new Intent( baseContext, AlarmReceiver.class );
+        Intent intent = new Intent( baseContext, AutoSoundTriggerReceiver.class );
         intent.putExtra( Constants.RINGER_MODE_BUNDLE_NAME, ringerMode );
         intent.putExtra( Constants.VOLUMES_BUNDLE_NAME, new int[]{ ringerVolume, mediaVolume, alarmVolume } );
 
@@ -45,7 +45,7 @@ public class AlarmManagerHandler
 
     public void cancelAlarm( int requestCode )
     {
-        Intent intent = new Intent( baseContext, AlarmReceiver.class );
+        Intent intent = new Intent( baseContext, AutoSoundTriggerReceiver.class );
         PendingIntent pendingIntent = PendingIntent.getBroadcast( baseContext, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT );
         alarmManager.cancel( pendingIntent );
     }

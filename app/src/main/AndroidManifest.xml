@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver" android:process=":remote"/>
+        <receiver android:name=".AutoSoundTriggerReceiver" android:process=":remote"/>
 
         <activity
             android:name=".activities.AddTriggerActivity"

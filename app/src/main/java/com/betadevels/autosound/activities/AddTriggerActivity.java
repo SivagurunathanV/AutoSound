@@ -218,7 +218,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                         {
                             if( autoSpaceFlowLayout != null )
                             {
-                                autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.rounded_rect_border_red_shape) );
+                                autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.shape_roundedrect_redborder) );
                             }
                             isFormValid = false;
                         }

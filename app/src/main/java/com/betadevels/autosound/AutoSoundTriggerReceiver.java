@@ -18,9 +18,9 @@ import com.betadevels.autosound.resources.Utilities;
 /**
  * Created by susindaran.e on 31/08/16.
  */
-public class AlarmReceiver extends BroadcastReceiver
+public class AutoSoundTriggerReceiver extends BroadcastReceiver
 {
-    private static final String TAG = "AlarmReceiver";
+    private static final String TAG = "AutoSoundTriggReceiver";
     private AudioManager audioManager;
     private Constants.RingerMode ringerMode;
     private int ringerVolume;
