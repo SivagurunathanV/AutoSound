@@ -9,10 +9,6 @@ import com.betadevels.autosound.resources.Constants;
 
 import java.util.Calendar;
 
-/**
- * Created by susindaran.e on 16/10/16.
- */
-
 public class AlarmManagerHandler
 {
     private AlarmManager alarmManager;

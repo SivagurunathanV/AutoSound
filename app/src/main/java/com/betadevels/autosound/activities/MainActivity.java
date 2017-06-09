@@ -1,5 +1,6 @@
 package com.betadevels.autosound.activities;
 
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -86,6 +88,14 @@ public class MainActivity extends AppCompatActivity
 
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper( createHelperCallback() );
             itemTouchHelper.attachToRecyclerView( recyclerView );
+        }
+
+        //TODO: Popup a dialog and ask for permission and then redirect to intent
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted())
+        {
+            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
         }
     }
 

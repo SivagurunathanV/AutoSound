@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.os.Build;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -15,13 +14,11 @@ import android.widget.RemoteViews;
 import com.betadevels.autosound.resources.Constants;
 import com.betadevels.autosound.resources.Utilities;
 
-/**
- * Created by susindaran.e on 31/08/16.
- */
 public class AutoSoundTriggerReceiver extends BroadcastReceiver
 {
     private static final String TAG = "AutoSoundTriggReceiver";
     private AudioManager audioManager;
+    private NotificationManager notificationManager;
     private Constants.RingerMode ringerMode;
     private int ringerVolume;
     private int mediaVolume;
@@ -42,6 +39,11 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
             audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
 
+        if( notificationManager == null )
+        {
+            notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+
         audioManager.setRingerMode( ringerMode.getValue() );
 
         ringerVolume = Utilities.percentOf( audioManager.getStreamMaxVolume( AudioManager.STREAM_RING ), volumes[0] );
@@ -58,19 +60,13 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         audioManager.setStreamVolume( AudioManager.STREAM_MUSIC, mediaVolume, AudioManager.FLAG_SHOW_UI );
         audioManager.setStreamVolume( AudioManager.STREAM_ALARM, alarmVolume, AudioManager.FLAG_SHOW_UI );
 
-        //Issuing notification
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder( context )
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle( "AutSound Triggered" )
                 .setContentText( "Ringer mode set to " + ringerMode.toString() )
                 .setAutoCancel(true);
 
-        if( Build.VERSION.SDK_INT >= 16 )
-        {
-            notificationBuilder.setCustomBigContentView( setupCustomView( context ) );
-        }
+        notificationBuilder.setCustomBigContentView( setupCustomView( context ) );
 
         Notification notification = notificationBuilder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
