@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     RecyclerView recyclerView;
     TriggerCardsAdapter triggerCardsAdapter;
-    AlertDialog alertDialog;
+    AlertDialog deleteAlertDialog;
     int deleteTriggerPosition;
 
     @Override
@@ -72,9 +73,9 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
-        if( alertDialog == null )
+        if( deleteAlertDialog == null )
         {
-            initAlertDialog();
+            initDeleteAlertDialog();
         }
 
         recyclerView = (RecyclerView) findViewById( R.id.recycler_view );
@@ -94,8 +95,7 @@ public class MainActivity extends AppCompatActivity
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted())
         {
-            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-            startActivity(intent);
+            displayNotificationPermissionDialog();
         }
     }
 
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity
 
                 Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
                 deleteTriggerPosition = adapterPosition;
-                alertDialog.show();
+                deleteAlertDialog.show();
             }
 
             @Override
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity
         };
     }
 
-    private void initAlertDialog()
+    private void initDeleteAlertDialog()
     {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
         alertDialogBuilder.setTitle( "Delete Trigger" )
@@ -252,21 +252,51 @@ public class MainActivity extends AppCompatActivity
                         triggerCardsAdapter.notifyItemChanged( deleteTriggerPosition );
                     }
                 });
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.setOnShowListener(
-            new DialogInterface.OnShowListener()
-            {
-                @Override
-                public void onShow(DialogInterface dialogInterface)
+        deleteAlertDialog = alertDialogBuilder.create();
+        deleteAlertDialog.setOnShowListener( new DialogOnShowListener( deleteAlertDialog ) );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void displayNotificationPermissionDialog()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setTitle( "Permission required" )
+                .setMessage( "App requires your permission to change sound settings. Provide access to the app in the next screen." )
+                .setIcon( android.R.drawable.ic_dialog_alert )
+                .setCancelable( false )
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener()
                 {
-                    Log.i(TAG, "onShow: OnShowListener");
-                    Window window = alertDialog.getWindow();
-                    if( window != null )
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
                     {
-                        window.setBackgroundDrawableResource( R.color.colorBackground );
+                        Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                        startActivity(intent);
                     }
-                }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.setOnShowListener( new DialogOnShowListener( alertDialog ) );
+        alertDialog.show();
+    }
+
+    private class DialogOnShowListener implements DialogInterface.OnShowListener
+    {
+        AlertDialog alertDialog;
+
+        DialogOnShowListener(AlertDialog alertDialog)
+        {
+            this.alertDialog = alertDialog;
+        }
+
+        @Override
+        public void onShow(DialogInterface dialog)
+        {
+            Log.i(TAG, "onShow: OnShowListener");
+            Window window = alertDialog.getWindow();
+            if( window != null )
+            {
+                window.setBackgroundDrawableResource( R.color.colorBackground );
             }
-        );
+        }
     }
 }
