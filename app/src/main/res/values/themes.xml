@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="BaseAppTheme">
+        <item name="colorAccent">@color/malibu</item>
+        <item name="android:colorBackground">@color/mineShaftDark</item>
+
+        <!-- floating button in the main activity -->
+        <item name="floatingBtnStyle">@style/FloatingBtnStyle_dark</item>
+
+        <!-- for buttons in the trigger activity -->
+        <item name="customButtonStyle">@style/ButtonStyle_dark</item>
+
+        <!-- background color for the dialogs -->
+        <item name="colorBackgroundFloating">@color/mineShaft</item>
+
+        <!-- text color for the header in the cardviews -->
+        <item name="cardHeaderColor">@color/white</item>
+
+        <!-- background color for the cardviews in the main activity -->
+        <item name="cardViewBackgroundColor">@color/black</item>
+    </style>
+</resources>

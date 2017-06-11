@@ -7,11 +7,10 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="3dp"
         card_view:cardCornerRadius="0dp"
         android:id="@+id/trigger_card_view"
         android:layout_gravity="center"
-        card_view:cardBackgroundColor="@color/colorCardBackground">
+        card_view:cardBackgroundColor="?cardViewBackgroundColor">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,7 +23,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="New Text"
                 android:id="@+id/trigger_date_txt"
-                android:textColor="@color/colorTextPrimary"
+                android:textColor="?cardHeaderColor"
                 android:layout_marginBottom="5dp"/>
 
             <LinearLayout
@@ -60,7 +59,7 @@
                     android:id="@+id/ringer_mode_txt"
                     android:paddingStart="2dp"
                     android:textSize="@dimen/bp_material_button_textsize"
-                    android:textColor="@color/colorAccent"/>
+                    android:textColor="@color/malibu"/>
 
             </LinearLayout>
 

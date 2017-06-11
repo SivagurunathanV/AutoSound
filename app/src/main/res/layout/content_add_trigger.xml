@@ -30,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/repeat_switch_str"
-                android:textColor="@android:color/white"
                 android:id="@+id/repeat_switch"/>
 
         </LinearLayout>
@@ -160,7 +159,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ringer_mode_spnr"
                 android:entries="@array/ringer_modes"
-                android:popupBackground="@color/colorPrimaryLight"
                 android:hint="@string/ringer_mode_spnr_hint"/>
 
         </LinearLayout>
@@ -240,7 +238,7 @@
                 android:id="@+id/cancel_btn"
                 android:layout_weight="1"
                 android:layout_margin="2dp"
-                android:background="@color/colorPrimaryDark"/>
+                style="?customButtonStyle"/>
 
             <Button
                 android:layout_width="match_parent"
@@ -249,8 +247,7 @@
                 android:id="@+id/create_btn"
                 android:layout_weight="1"
                 android:layout_margin="2dp"
-                android:background="@color/colorPrimaryDark"
-                />
+                style="?customButtonStyle" />
 
         </LinearLayout>
 

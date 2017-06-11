@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity
             Window window = alertDialog.getWindow();
             if( window != null )
             {
-                window.setBackgroundDrawableResource( R.color.colorBackground );
+//                window.setBackgroundDrawableResource( R.color.test );
             }
         }
     }
