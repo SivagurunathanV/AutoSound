@@ -28,6 +28,7 @@
     <string name="media_volume_txt">Media Volume</string>
     <string name="ringer_volume_txt">Ringer Volume</string>
     <string name="separator_txt_str"> .</string>
+    <string name="notification_icon">Notification Icon</string>
 
     <string-array name="ringer_modes">
         <item>Normal</item>

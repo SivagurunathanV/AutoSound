@@ -67,8 +67,9 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
                 .setAutoCancel(true);
 
         notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        notificationBuilder.setDefaults(Notification.DEFAULT_ALL);
-        notificationBuilder.setCustomBigContentView( setupCustomView( context ) );
+        notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+        notificationBuilder.setCustomBigContentView( setupCustomView( context, true ) );
+        notificationBuilder.setContent( setupCustomView( context, false ) );
 
         Notification notification = notificationBuilder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -77,7 +78,7 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         Log.i(TAG, "onCheckedChanged: Receiver end");
     }
 
-    public RemoteViews setupCustomView( Context context )
+    public RemoteViews setupCustomView( Context context, boolean bigView )
     {
         RemoteViews remoteViews = new RemoteViews( context.getPackageName(), R.layout.notification);
 
@@ -85,22 +86,29 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         remoteViews.setTextViewText( R.id.notification_title_txt, "AutoSound Triggered" );
         remoteViews.setTextViewText( R.id.notification_content_txt, "Ringer mode set to " + ringerMode.toString() );
 
-        //Setting volume ProgressBars
-        if( ringerMode != Constants.RingerMode.Normal )
+        if( !bigView )
         {
-            remoteViews.setViewVisibility( R.id.ringer_volume_tv, View.GONE );
-            remoteViews.setViewVisibility( R.id.ringer_volume_pbar, View.GONE );
+            remoteViews.setViewVisibility( R.id.trigger_card_content_layout, View.GONE );
         }
         else
         {
-            remoteViews.setProgressBar( R.id.ringer_volume_pbar, audioManager.getStreamMaxVolume( AudioManager.STREAM_RING ),
-                    ringerVolume, false);
-        }
+            //Setting volume ProgressBars
+            if( ringerMode != Constants.RingerMode.Normal )
+            {
+                remoteViews.setViewVisibility( R.id.ringer_volume_tv, View.GONE );
+                remoteViews.setViewVisibility( R.id.ringer_volume_pbar, View.GONE );
+            }
+            else
+            {
+                remoteViews.setProgressBar( R.id.ringer_volume_pbar, audioManager.getStreamMaxVolume( AudioManager.STREAM_RING ),
+                        ringerVolume, false);
+            }
 
-        remoteViews.setProgressBar( R.id.media_volume_pbar, audioManager.getStreamMaxVolume( AudioManager.STREAM_MUSIC ),
-                mediaVolume, false);
-        remoteViews.setProgressBar( R.id.alarm_volume_pbar, audioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM ),
-                alarmVolume, false);
+            remoteViews.setProgressBar( R.id.media_volume_pbar, audioManager.getStreamMaxVolume( AudioManager.STREAM_MUSIC ),
+                    mediaVolume, false);
+            remoteViews.setProgressBar( R.id.alarm_volume_pbar, audioManager.getStreamMaxVolume( AudioManager.STREAM_ALARM ),
+                    alarmVolume, false);
+        }
 
         return remoteViews;
     }
