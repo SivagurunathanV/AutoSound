@@ -62,7 +62,7 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
 
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder( context )
                 .setSmallIcon( R.drawable.ic_notification )
-                .setContentTitle( "AutSound Triggered" )
+                .setContentTitle( "AutoSound Triggered" )
                 .setContentText( "Ringer mode set to " + ringerMode.toString() )
                 .setAutoCancel(true);
 
@@ -80,7 +80,7 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         RemoteViews remoteViews = new RemoteViews( context.getPackageName(), R.layout.notification);
 
         //Setting title and content of notification's CustomView
-        remoteViews.setTextViewText( R.id.notification_title_txt, "AutSound Triggered" );
+        remoteViews.setTextViewText( R.id.notification_title_txt, "AutoSound Triggered" );
         remoteViews.setTextViewText( R.id.notification_content_txt, "Ringer mode set to " + ringerMode.toString() );
 
         //Setting volume ProgressBars
