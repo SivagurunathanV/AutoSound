@@ -61,7 +61,7 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         audioManager.setStreamVolume( AudioManager.STREAM_ALARM, alarmVolume, AudioManager.FLAG_SHOW_UI );
 
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder( context )
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon( R.drawable.ic_notification )
                 .setContentTitle( "AutSound Triggered" )
                 .setContentText( "Ringer mode set to " + ringerMode.toString() )
                 .setAutoCancel(true);
