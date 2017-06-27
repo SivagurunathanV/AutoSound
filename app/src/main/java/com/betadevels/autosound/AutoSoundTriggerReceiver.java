@@ -53,12 +53,12 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
 
         if( ringerMode == Constants.RingerMode.Normal )
         {
-            audioManager.setStreamVolume( AudioManager.STREAM_RING, ringerVolume, AudioManager.FLAG_SHOW_UI );
-            audioManager.setStreamVolume( AudioManager.STREAM_NOTIFICATION, notificationVolume, AudioManager.FLAG_SHOW_UI );
+            audioManager.setStreamVolume( AudioManager.STREAM_RING, ringerVolume, AudioManager.FLAG_VIBRATE );
+            audioManager.setStreamVolume( AudioManager.STREAM_NOTIFICATION, notificationVolume, AudioManager.FLAG_VIBRATE );
         }
 
-        audioManager.setStreamVolume( AudioManager.STREAM_MUSIC, mediaVolume, AudioManager.FLAG_SHOW_UI );
-        audioManager.setStreamVolume( AudioManager.STREAM_ALARM, alarmVolume, AudioManager.FLAG_SHOW_UI );
+        audioManager.setStreamVolume( AudioManager.STREAM_MUSIC, mediaVolume, AudioManager.FLAG_VIBRATE );
+        audioManager.setStreamVolume( AudioManager.STREAM_ALARM, alarmVolume, AudioManager.FLAG_VIBRATE );
 
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder( context )
                 .setSmallIcon( R.drawable.ic_notification )
@@ -66,6 +66,8 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
                 .setContentText( "Ringer mode set to " + ringerMode.toString() )
                 .setAutoCancel(true);
 
+        notificationBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        notificationBuilder.setDefaults(Notification.DEFAULT_ALL);
         notificationBuilder.setCustomBigContentView( setupCustomView( context ) );
 
         Notification notification = notificationBuilder.build();
