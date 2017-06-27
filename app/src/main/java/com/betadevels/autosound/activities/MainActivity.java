@@ -24,16 +24,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.activeandroid.Configuration.Builder;
+import com.betadevels.autosound.DAOs.TriggerDAO;
 import com.betadevels.autosound.R;
 import com.betadevels.autosound.adapters.TriggerCardsAdapter;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
-import com.betadevels.autosound.DAOs.TriggerDAO;
 import com.betadevels.autosound.resources.Constants;
 
 import java.lang.ref.WeakReference;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Configuration dbConfiguration = new Configuration.Builder( this ).setDatabaseName( "AutoSound.db" ).addModelClasses(Trigger.class, TriggerInstance.class).create();
+        Configuration dbConfiguration = new Builder( this ).setDatabaseName( "AutoSound.db" ).addModelClasses(Trigger.class, TriggerInstance.class).create();
         ActiveAndroid.initialize(dbConfiguration);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity
             itemTouchHelper.attachToRecyclerView( recyclerView );
         }
 
-        //TODO: Popup a dialog and ask for permission and then redirect to intent
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted())
         {
@@ -253,7 +252,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         deleteAlertDialog = alertDialogBuilder.create();
-        deleteAlertDialog.setOnShowListener( new DialogOnShowListener( deleteAlertDialog ) );
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -275,28 +273,6 @@ public class MainActivity extends AppCompatActivity
                 });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.setOnShowListener( new DialogOnShowListener( alertDialog ) );
         alertDialog.show();
-    }
-
-    private class DialogOnShowListener implements DialogInterface.OnShowListener
-    {
-        AlertDialog alertDialog;
-
-        DialogOnShowListener(AlertDialog alertDialog)
-        {
-            this.alertDialog = alertDialog;
-        }
-
-        @Override
-        public void onShow(DialogInterface dialog)
-        {
-            Log.i(TAG, "onShow: OnShowListener");
-            Window window = alertDialog.getWindow();
-            if( window != null )
-            {
-//                window.setBackgroundDrawableResource( R.color.test );
-            }
-        }
     }
 }
