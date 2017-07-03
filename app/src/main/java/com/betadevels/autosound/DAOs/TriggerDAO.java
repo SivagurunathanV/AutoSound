@@ -10,10 +10,6 @@ import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
-/**
- * Created by susindaran.e on 13/09/16.
- */
-
 public class TriggerDAO
 {
     public static Trigger create(boolean isRepeat, CheckBox[] daysOfWeekCheckBoxes, int year, int month, int day,

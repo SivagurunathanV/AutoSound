@@ -28,9 +28,6 @@ import org.joda.time.LocalTime;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Created by susindaran.e on 18/09/16.
- */
 public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapter.TriggerCardViewHolder>
 {
     private static final String TAG = "TriggerCardsAdapter";

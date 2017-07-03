@@ -12,10 +12,6 @@ import org.joda.time.LocalDateTime;
 
 import java.util.Date;
 
-/**
- * Created by susindaran.e on 13/09/16.
- */
-
 @Table( name = "sound_trigger", id = BaseColumns._ID)
 public class Trigger extends Model
 {

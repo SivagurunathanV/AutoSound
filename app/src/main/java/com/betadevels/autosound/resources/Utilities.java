@@ -1,8 +1,5 @@
 package com.betadevels.autosound.resources;
 
-/**
- * Created by susindaran.e on 18/09/16.
- */
 public class Utilities
 {
     public static String[] daysOfWeeks = new String[]{ "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY" };

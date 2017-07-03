@@ -5,10 +5,6 @@ import com.betadevels.autosound.models.TriggerInstance;
 
 import java.util.List;
 
-/**
- * Created by susindaran.e on 16/10/16.
- */
-
 public class TriggerInstanceDAO
 {
     public static TriggerInstance create( long triggerId )
