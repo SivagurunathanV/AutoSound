@@ -334,7 +334,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
 
         ChainTourGuide weekDaysLayoutStep = ChainTourGuide.init( this )
                 .setToolTip(new ToolTip().setTitle("Days of Week")
-                        .setDescription("If you have switched on the repeat button above, select the days of the week here for the trigger to be activated on").
+                        .setDescription("If you have switched on the repeat button above, select the days of the week here on which the trigger should be activate").
                                 setGravity( Gravity.BOTTOM | Gravity.CENTER ))
                 .playLater( autoSpaceFlowLayout );
 
