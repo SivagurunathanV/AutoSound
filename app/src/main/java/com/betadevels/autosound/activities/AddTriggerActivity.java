@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +32,12 @@ import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFra
 import org.joda.time.LocalDateTime;
 
 import java.util.Calendar;
+
+import tourguide.tourguide.ChainTourGuide;
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
+import tourguide.tourguide.Sequence;
+import tourguide.tourguide.ToolTip;
 
 public class AddTriggerActivity extends AppCompatActivity implements CalendarDatePickerDialogFragment.OnDateSetListener,
         RadialTimePickerDialogFragment.OnTimeSetListener
@@ -310,6 +317,61 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 }
             });
         }
+
+        createTourGuide();
+    }
+
+    public void createTourGuide()
+    {
+        ChainTourGuide repeatSwitchStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Repeat Weekly")
+                        .setDescription("Enable this switch if you want your trigger to be repeated weekly").
+                                setGravity( Gravity.BOTTOM | Gravity.CENTER ))
+                .playLater( repeatSwitch );
+
+        ChainTourGuide weekDaysLayoutStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Days of Week")
+                        .setDescription("If you have switched on the repeat button above, select the days of the week here for the trigger to be activated on").
+                                setGravity( Gravity.BOTTOM | Gravity.CENTER ))
+                .playLater( autoSpaceFlowLayout );
+
+        ChainTourGuide setDateStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Set Date")
+                        .setDescription("If you want the trigger to be a one time activity, disable the repeat switch above and set the date here").
+                                setGravity( Gravity.END ))
+                .playLater( setDateButton );
+
+        ChainTourGuide setTimeStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Set Time")
+                        .setDescription("Set the time for the trigger").
+                                setGravity( Gravity.START ))
+                .playLater( setTimeButton );
+
+        ChainTourGuide setRingerStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Set Ringer mode")
+                        .setDescription("Select the ringer mode to be set by the trigger").
+                                setGravity( Gravity.TOP ))
+                .playLater( ringerModeSpinner );
+
+        ChainTourGuide setVolumesStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Set Volumes")
+                        .setDescription("Set the volumes of different streams here").
+                                setGravity( Gravity.TOP ))
+                .playLater( ringerVolumeSeekBar );
+
+        ChainTourGuide createStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Create Trigger")
+                        .setDescription("When you are done, click on create to schedule the trigger").
+                                setGravity( Gravity.TOP | Gravity.START ))
+                .playLater( createButton );
+
+        Sequence sequence = new Sequence.SequenceBuilder().add(repeatSwitchStep, weekDaysLayoutStep, setDateStep, setTimeStep, setRingerStep, setVolumesStep, createStep)
+                .setDefaultOverlay(new Overlay())
+                .setDefaultPointer(new Pointer())
+                .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                .build();
+
+        ChainTourGuide.init( this ).playInSequence( sequence );
     }
 
     @Override

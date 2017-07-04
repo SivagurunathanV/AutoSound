@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,13 +40,19 @@ import com.betadevels.autosound.resources.Constants;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import tourguide.tourguide.Overlay;
+import tourguide.tourguide.Pointer;
+import tourguide.tourguide.ToolTip;
+import tourguide.tourguide.TourGuide;
+
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
-    RecyclerView recyclerView;
-    TriggerCardsAdapter triggerCardsAdapter;
-    AlertDialog deleteAlertDialog;
-    int deleteTriggerPosition;
+    private RecyclerView recyclerView;
+    private TriggerCardsAdapter triggerCardsAdapter;
+    private AlertDialog deleteAlertDialog;
+    private int deleteTriggerPosition;
+    private TourGuide tourGuide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,6 +74,11 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view)
                 {
+                    if( tourGuide != null )
+                    {
+                        tourGuide.cleanUp();
+                    }
+
                     Intent launchAddNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
                     startActivityForResult(launchAddNewTriggerIntent, Constants.ADD_TRIGGER_ACTIVITY_RC );
                 }
@@ -90,6 +102,16 @@ public class MainActivity extends AppCompatActivity
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper( createHelperCallback() );
             itemTouchHelper.attachToRecyclerView( recyclerView );
         }
+
+        //Creating the tour guide after the recycle view is rendered
+        tourGuide = TourGuide.init( this )
+                .with(TourGuide.Technique.Click)
+                .setPointer(new Pointer())
+                .setToolTip(new ToolTip().setTitle("Create new Trigger")
+                        .setDescription("Click on this icon to create new trigger for profile change")
+                        .setGravity(Gravity.TOP | Gravity.START))
+                .setOverlay(new Overlay())
+                .playOn( fab );
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted())
