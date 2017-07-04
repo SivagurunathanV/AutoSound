@@ -318,7 +318,10 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
             });
         }
 
-        createTourGuide();
+        if( !getIntent().getBooleanExtra("com.betadevels.autosound.MAIN_TOUR_GUIDE", false) )
+        {
+            createTourGuide();
+        }
     }
 
     public void createTourGuide()

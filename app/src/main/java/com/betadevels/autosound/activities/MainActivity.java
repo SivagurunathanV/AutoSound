@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     Intent addNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
+                    addNewTriggerIntent.putExtra("com.betadevels.autosound.MAIN_TOUR_GUIDE", mainTourGuideCompleted);
                     startActivityForResult(addNewTriggerIntent, Constants.ADD_TRIGGER_ACTIVITY_RC );
                 }
             });
