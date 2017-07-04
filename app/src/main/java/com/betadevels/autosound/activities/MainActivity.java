@@ -216,8 +216,9 @@ public class MainActivity extends AppCompatActivity
             // activity.
             if( !mainTourGuideCompleted )
             {
+                mainTourGuideCompleted = true;
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("MAIN_TOUR_GUIDE", true);
+                editor.putBoolean("MAIN_TOUR_GUIDE", mainTourGuideCompleted);
                 editor.apply();
             }
 
