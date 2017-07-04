@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
                     }
 
                     Intent addNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
-                    addNewTriggerIntent.putExtra("com.betadevels.autosound.MAIN_TOUR_GUIDE", mainTourGuideCompleted);
+                    addNewTriggerIntent.putExtra(getString(R.string.main_tour_preference_key), mainTourGuideCompleted);
                     startActivityForResult(addNewTriggerIntent, Constants.ADD_TRIGGER_ACTIVITY_RC );
                 }
             });
@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity
 
         //Creating the tour guide after the recycle view is rendered and if app is opened for first time
         preferences = preferences == null ? getPreferences(Context.MODE_PRIVATE) : preferences;
-        mainTourGuideCompleted = preferences.getBoolean("MAIN_TOUR_GUIDE", false);
-        deleteTourGuideCompleted = preferences.getBoolean("DELETE_TOUR_GUIDE", false);
+        mainTourGuideCompleted = preferences.getBoolean(getString(R.string.main_tour_preference_key), false);
+        deleteTourGuideCompleted = preferences.getBoolean(getString(R.string.delete_tour_preference_key), false);
 
         if( !mainTourGuideCompleted)
         {
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity
                     .with(TourGuide.Technique.Click)
                     .setPointer(new Pointer())
                     .setToolTip(new ToolTip().setTitle("Create new Trigger")
-                            .setDescription("Click on this icon to create new trigger for profile change")
+                            .setDescription("Click on this icon to create new trigger for sound profile change")
                             .setGravity(Gravity.TOP | Gravity.START))
                     .setOverlay(new Overlay())
                     .playOn( fab );
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
 
         deleteTourGuideCompleted = true;
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("DELETE_TOUR_GUIDE", deleteTourGuideCompleted);
+        editor.putBoolean(getString(R.string.delete_tour_preference_key), deleteTourGuideCompleted);
         editor.apply();
     }
 
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
             {
                 mainTourGuideCompleted = true;
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("MAIN_TOUR_GUIDE", mainTourGuideCompleted);
+                editor.putBoolean(getString(R.string.main_tour_preference_key), mainTourGuideCompleted);
                 editor.apply();
             }
 

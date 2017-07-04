@@ -318,7 +318,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
             });
         }
 
-        if( !getIntent().getBooleanExtra("com.betadevels.autosound.MAIN_TOUR_GUIDE", false) )
+        if( !getIntent().getBooleanExtra(getString(R.string.main_tour_preference_key), false) )
         {
             createTourGuide();
         }
