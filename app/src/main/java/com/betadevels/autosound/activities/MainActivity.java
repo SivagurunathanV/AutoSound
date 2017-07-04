@@ -27,6 +27,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -42,8 +43,10 @@ import com.betadevels.autosound.resources.Constants;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import tourguide.tourguide.ChainTourGuide;
 import tourguide.tourguide.Overlay;
 import tourguide.tourguide.Pointer;
+import tourguide.tourguide.Sequence;
 import tourguide.tourguide.ToolTip;
 import tourguide.tourguide.TourGuide;
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     private AlertDialog deleteAlertDialog;
     private int deleteTriggerPosition;
 
-    private TourGuide tourGuide;
+    private TourGuide mainTourGuide;
     private SharedPreferences preferences;
     private boolean mainTourGuideCompleted;
     private boolean deleteTourGuideCompleted;
@@ -80,9 +83,9 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view)
                 {
-                    if( tourGuide != null )
+                    if( mainTourGuide != null )
                     {
-                        tourGuide.cleanUp();
+                        mainTourGuide.cleanUp();
                     }
 
                     Intent addNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
@@ -105,6 +108,18 @@ public class MainActivity extends AppCompatActivity
 
             triggerCardsAdapter = new TriggerCardsAdapter( this, new WeakReference<>(recyclerView), TriggerDAO.getAllTriggers());
             recyclerView.setAdapter(triggerCardsAdapter);
+            recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout()
+                {
+                    Log.i(TAG, "From onGlobalLayout");
+                    if(!deleteTourGuideCompleted && recyclerView.getChildCount() >= 1)
+                    {
+                        startDeleteTourGuide();
+                        recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                }
+            });
 
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper( createHelperCallback() );
             itemTouchHelper.attachToRecyclerView( recyclerView );
@@ -117,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
         if( !mainTourGuideCompleted)
         {
-            tourGuide = TourGuide.init( this )
+            mainTourGuide = TourGuide.init( this )
                     .with(TourGuide.Technique.Click)
                     .setPointer(new Pointer())
                     .setToolTip(new ToolTip().setTitle("Create new Trigger")
@@ -132,6 +147,37 @@ public class MainActivity extends AppCompatActivity
         {
             displayNotificationPermissionDialog();
         }
+    }
+
+    private void startDeleteTourGuide()
+    {
+        View itemView = recyclerView.findViewHolderForLayoutPosition(0).itemView;
+        Log.i(TAG, Boolean.toString(itemView == null));
+        ChainTourGuide newTriggerStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Created Trigger")
+                        .setDescription("Triggers you have created will appear here. Click on a trigger to view its volume settings.").
+                                setGravity( Gravity.BOTTOM | Gravity.CENTER ))
+                .playLater( itemView );
+
+
+        ChainTourGuide deleteCardStep = ChainTourGuide.init( this )
+                .setToolTip(new ToolTip().setTitle("Delete Trigger")
+                        .setDescription("You can delete a trigger by swiping it to the left.").
+                                setGravity( Gravity.BOTTOM | Gravity.CENTER ))
+                .playLater( itemView );
+
+        Sequence sequence = new Sequence.SequenceBuilder().add(newTriggerStep, deleteCardStep)
+                .setDefaultOverlay(new Overlay())
+                .setDefaultPointer(null)
+                .setContinueMethod(Sequence.ContinueMethod.Overlay)
+                .build();
+
+        ChainTourGuide.init( this ).playInSequence( sequence );
+
+        deleteTourGuideCompleted = true;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("DELETE_TOUR_GUIDE", deleteTourGuideCompleted);
+        editor.apply();
     }
 
     @Override
@@ -165,6 +211,9 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if( requestCode == Constants.ADD_TRIGGER_ACTIVITY_RC )
         {
+            // Since the main tour guide takes the user to the add trigger activity
+            // we are changing the preference value after we have returned from the
+            // activity.
             if( !mainTourGuideCompleted )
             {
                 SharedPreferences.Editor editor = preferences.edit();
