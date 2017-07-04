@@ -207,101 +207,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         createButton = (Button) findViewById( R.id.create_btn );
         if( createButton != null )
         {
-            createButton.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    boolean isFormValid = true;
-                    if( repeatSwitch.isChecked() )
-                    {
-                        int boxesChecked = 0;
-                        for( CheckBox checkBox : weekDaysCheckBoxes )
-                        {
-                            boxesChecked += checkBox.isChecked() ? 1 : 0;
-                        }
-
-                        if( boxesChecked == 0 )
-                        {
-                            if( autoSpaceFlowLayout != null )
-                            {
-                                autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.shape_roundedrect_redborder) );
-                            }
-                            isFormValid = false;
-                        }
-                        else if( autoSpaceFlowLayout != null )
-                        {
-                            autoSpaceFlowLayout.setBackground( null );
-                        }
-                    }
-                    else if( !isDateSet )
-                    {
-                        isFormValid = false;
-                        setDateButton.setError( "Date not set" );
-                    }
-
-                    if( !isTimeSet )
-                    {
-                        isFormValid = false;
-                        setTimeButton.setError( "Time not set" );
-                    }
-
-                    if( isFormValid )
-                    {
-                        String ringerMode = ringerModeSpinner.getSelectedItem().toString();
-                        int ringerVolume = ringerVolumeSeekBar.getProgress();
-                        int mediaVolume = mediaVolumeSeekBar.getProgress();
-                        int alarmVolume = alarmVolumeSeekBar.getProgress();
-                        Trigger trigger = TriggerDAO.create( repeatSwitch.isChecked(), weekDaysCheckBoxes,
-                                year, month, day, hourOfDay, minute, ringerMode, ringerVolume, mediaVolume, alarmVolume);
-
-                        if( repeatSwitch.isChecked() )
-                        {
-                            for( int i = 0; i < weekDaysCheckBoxes.length; i++ )
-                            {
-                                if( weekDaysCheckBoxes[i].isChecked() )
-                                {
-                                    Calendar calendar = Calendar.getInstance();
-
-                                    //If the day has already past this week, then schedule it from
-                                    //next week.
-                                    if( calendar.get( Calendar.DAY_OF_WEEK ) > i + 1 )
-                                    {
-                                        calendar.add( Calendar.WEEK_OF_YEAR, 1 );
-                                    }
-
-                                    calendar.set( Calendar.DAY_OF_WEEK, i + 1 );
-                                    calendar.set( Calendar.HOUR_OF_DAY, hourOfDay );
-                                    calendar.set( Calendar.MINUTE, minute );
-
-                                    //If the day is today but the time has past, then schedule it
-                                    //from next week.
-                                    if( calendar.compareTo( Calendar.getInstance() ) < 0 )
-                                    {
-                                        calendar.add( Calendar.WEEK_OF_YEAR, 1 );
-                                    }
-
-                                    Log.i(TAG, "onClick: Setting alarm for Calendar : " + new LocalDateTime( calendar ).toString());
-                                    TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
-                                    alarmManagerHandler.setAlarm( triggerInstance.getId().intValue(), true, calendar,
-                                            ringerMode, ringerVolume, mediaVolume, alarmVolume );
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.set( year, month, day, hourOfDay, minute);
-                            TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
-                            alarmManagerHandler.setAlarm( triggerInstance.getId().intValue(), false, calendar, ringerMode, ringerVolume,
-                                    mediaVolume, alarmVolume);
-                        }
-
-                        setResult( RESULT_OK );
-                        finish();
-                    }
-                }
-            });
+            createButton.setOnClickListener(new CreateButtonOnClickListener());
         }
 
         cancelButton = (Button) findViewById( R.id.cancel_btn );
@@ -437,5 +343,101 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class CreateButtonOnClickListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            boolean isFormValid = true;
+            if( repeatSwitch.isChecked() )
+            {
+                int boxesChecked = 0;
+                for( CheckBox checkBox : weekDaysCheckBoxes )
+                {
+                    boxesChecked += checkBox.isChecked() ? 1 : 0;
+                }
+
+                if( boxesChecked == 0 )
+                {
+                    if( autoSpaceFlowLayout != null )
+                    {
+                        autoSpaceFlowLayout.setBackground( ContextCompat.getDrawable( getBaseContext(), R.drawable.shape_roundedrect_redborder) );
+                    }
+                    isFormValid = false;
+                }
+                else if( autoSpaceFlowLayout != null )
+                {
+                    autoSpaceFlowLayout.setBackground( null );
+                }
+            }
+            else if( !isDateSet )
+            {
+                isFormValid = false;
+                setDateButton.setError( "Date not set" );
+            }
+
+            if( !isTimeSet )
+            {
+                isFormValid = false;
+                setTimeButton.setError( "Time not set" );
+            }
+
+            if( isFormValid )
+            {
+                String ringerMode = ringerModeSpinner.getSelectedItem().toString();
+                int ringerVolume = ringerVolumeSeekBar.getProgress();
+                int mediaVolume = mediaVolumeSeekBar.getProgress();
+                int alarmVolume = alarmVolumeSeekBar.getProgress();
+                Trigger trigger = TriggerDAO.create( repeatSwitch.isChecked(), weekDaysCheckBoxes,
+                        year, month, day, hourOfDay, minute, ringerMode, ringerVolume, mediaVolume, alarmVolume);
+
+                if( repeatSwitch.isChecked() )
+                {
+                    for( int i = 0; i < weekDaysCheckBoxes.length; i++ )
+                    {
+                        if( weekDaysCheckBoxes[i].isChecked() )
+                        {
+                            Calendar calendar = Calendar.getInstance();
+
+                            //If the day has already past this week, then schedule it from
+                            //next week.
+                            if( calendar.get( Calendar.DAY_OF_WEEK ) > i + 1 )
+                            {
+                                calendar.add( Calendar.WEEK_OF_YEAR, 1 );
+                            }
+
+                            calendar.set( Calendar.DAY_OF_WEEK, i + 1 );
+                            calendar.set( Calendar.HOUR_OF_DAY, hourOfDay );
+                            calendar.set( Calendar.MINUTE, minute );
+
+                            //If the day is today but the time has past, then schedule it
+                            //from next week.
+                            if( calendar.compareTo( Calendar.getInstance() ) < 0 )
+                            {
+                                calendar.add( Calendar.WEEK_OF_YEAR, 1 );
+                            }
+
+                            Log.i(TAG, "onClick: Setting alarm for Calendar : " + new LocalDateTime( calendar ).toString());
+                            TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
+                            alarmManagerHandler.setAlarm( triggerInstance.getId().intValue(), true, calendar,
+                                    ringerMode, ringerVolume, mediaVolume, alarmVolume );
+                        }
+                    }
+                }
+                else
+                {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set( year, month, day, hourOfDay, minute);
+                    TriggerInstance triggerInstance = TriggerInstanceDAO.create( trigger.getId() );
+                    alarmManagerHandler.setAlarm( triggerInstance.getId().intValue(), false, calendar, ringerMode, ringerVolume,
+                            mediaVolume, alarmVolume);
+                }
+
+                setResult( RESULT_OK );
+                finish();
+            }
+        }
     }
 }
