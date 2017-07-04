@@ -1,8 +1,10 @@
 package com.betadevels.autosound.activities;
 
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -52,7 +54,11 @@ public class MainActivity extends AppCompatActivity
     private TriggerCardsAdapter triggerCardsAdapter;
     private AlertDialog deleteAlertDialog;
     private int deleteTriggerPosition;
+
     private TourGuide tourGuide;
+    private SharedPreferences preferences;
+    private boolean mainTourGuideCompleted;
+    private boolean deleteTourGuideCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -79,8 +85,8 @@ public class MainActivity extends AppCompatActivity
                         tourGuide.cleanUp();
                     }
 
-                    Intent launchAddNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
-                    startActivityForResult(launchAddNewTriggerIntent, Constants.ADD_TRIGGER_ACTIVITY_RC );
+                    Intent addNewTriggerIntent = new Intent( getBaseContext(), AddTriggerActivity.class );
+                    startActivityForResult(addNewTriggerIntent, Constants.ADD_TRIGGER_ACTIVITY_RC );
                 }
             });
         }
@@ -103,15 +109,22 @@ public class MainActivity extends AppCompatActivity
             itemTouchHelper.attachToRecyclerView( recyclerView );
         }
 
-        //Creating the tour guide after the recycle view is rendered
-        tourGuide = TourGuide.init( this )
-                .with(TourGuide.Technique.Click)
-                .setPointer(new Pointer())
-                .setToolTip(new ToolTip().setTitle("Create new Trigger")
-                        .setDescription("Click on this icon to create new trigger for profile change")
-                        .setGravity(Gravity.TOP | Gravity.START))
-                .setOverlay(new Overlay())
-                .playOn( fab );
+        //Creating the tour guide after the recycle view is rendered and if app is opened for first time
+        preferences = preferences == null ? getPreferences(Context.MODE_PRIVATE) : preferences;
+        mainTourGuideCompleted = preferences.getBoolean("MAIN_TOUR_GUIDE", false);
+        deleteTourGuideCompleted = preferences.getBoolean("DELETE_TOUR_GUIDE", false);
+
+        if( !mainTourGuideCompleted)
+        {
+            tourGuide = TourGuide.init( this )
+                    .with(TourGuide.Technique.Click)
+                    .setPointer(new Pointer())
+                    .setToolTip(new ToolTip().setTitle("Create new Trigger")
+                            .setDescription("Click on this icon to create new trigger for profile change")
+                            .setGravity(Gravity.TOP | Gravity.START))
+                    .setOverlay(new Overlay())
+                    .playOn( fab );
+        }
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted())
@@ -151,6 +164,13 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if( requestCode == Constants.ADD_TRIGGER_ACTIVITY_RC )
         {
+            if( !mainTourGuideCompleted )
+            {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("MAIN_TOUR_GUIDE", true);
+                editor.apply();
+            }
+
             if( resultCode == RESULT_OK )
             {
                 List<Trigger> triggers = TriggerDAO.getAllTriggers();
