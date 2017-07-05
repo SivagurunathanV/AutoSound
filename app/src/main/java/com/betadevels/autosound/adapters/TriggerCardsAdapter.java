@@ -71,6 +71,22 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         notifyItemInserted( position );
     }
 
+    public void deleteAll()
+    {
+        for(Trigger trigger : triggers)
+        {
+            TriggerDAO.delete( trigger.getId() );
+            for( TriggerInstance triggerInstance : TriggerInstanceDAO.getAllTriggerInstances( trigger.getId() ) )
+            {
+                alarmManagerHandler.cancelAlarm( triggerInstance.getId().intValue() );
+                TriggerInstanceDAO.delete( triggerInstance.getId() );
+            }
+        }
+
+        triggers.clear();
+        notifyDataSetChanged();
+    }
+
     public void delete( int adapterPosition )
     {
         //Updating the expandedPosition according to card deletion.
