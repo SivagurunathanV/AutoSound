@@ -103,7 +103,7 @@ public class AutoSpaceFlowLayout extends ViewGroup
         int yPosition = getPaddingTop();
         int widthOccupied = 0;
 
-        Log.i(TAG, "onLayout: paddingRight : " + getPaddingRight());
+        Log.d(TAG, "onLayout: paddingRight : " + getPaddingRight());
 
         int childCount = getChildCount();
         int xPadding = calculateXPadding( childCount, availableWidth, getChildAt(0).getMeasuredWidth() );

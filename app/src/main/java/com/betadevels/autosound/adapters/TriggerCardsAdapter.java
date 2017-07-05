@@ -101,7 +101,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
                 expandedPosition -= 1;
             }
         }
-        Log.i(TAG, "onClick: ExpandedPosition : " + expandedPosition);
+        Log.d(TAG, "onClick: ExpandedPosition : " + expandedPosition);
 
         Long triggerId = triggers.get(adapterPosition).getId();
         TriggerDAO.delete( triggerId );
@@ -110,7 +110,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
         {
             for( TriggerInstance triggerInstance : triggerInstances )
             {
-                Log.i(TAG, "delete: Removing triggerInstance : " + triggerInstance.triggerId + " - " + triggerInstance.getId());
+                Log.d(TAG, "delete: Removing triggerInstance : " + triggerInstance.triggerId + " - " + triggerInstance.getId());
                 alarmManagerHandler.cancelAlarm( triggerInstance.getId().intValue() );
                 TriggerInstanceDAO.delete( triggerInstance.getId() );
             }
@@ -191,7 +191,7 @@ public class TriggerCardsAdapter extends RecyclerView.Adapter<TriggerCardsAdapte
             @Override
             public void onClick(View v)
             {
-                Log.i(TAG, "onClick: Clicked on position : " + adapterPosition);
+                Log.d(TAG, "onClick: Clicked on position : " + adapterPosition);
                 expandedPosition = isExpanded ? -1 : (int)v.getTag();
                 if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT )
                 {

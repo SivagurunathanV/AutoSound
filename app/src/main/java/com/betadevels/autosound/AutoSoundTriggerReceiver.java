@@ -32,7 +32,7 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         ringerMode = Constants.RingerMode.valueOf( intent.getStringExtra( Constants.RINGER_MODE_BUNDLE_NAME ) );
         int[] volumes = intent.getIntArrayExtra(Constants.VOLUMES_BUNDLE_NAME);
 
-        Log.i(TAG, "onReceive: Volumes : " + volumes[0] + ", " + volumes[1] + ", " + volumes[2]);
+        Log.d(TAG, "onReceive: Volumes : " + volumes[0] + ", " + volumes[1] + ", " + volumes[2]);
 
         if( audioManager == null )
         {
@@ -75,7 +75,7 @@ public class AutoSoundTriggerReceiver extends BroadcastReceiver
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify( 1010, notification );
 
-        Log.i(TAG, "onCheckedChanged: Receiver end");
+        Log.d(TAG, "onCheckedChanged: Receiver end");
     }
 
     public RemoteViews setupCustomView( Context context, boolean bigView )

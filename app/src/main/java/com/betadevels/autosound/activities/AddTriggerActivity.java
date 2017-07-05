@@ -175,7 +175,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
                 {
                     String selectedRingerMode = parent.getItemAtPosition( position ).toString();
-                    Log.i(TAG, "onItemSelected: Selected Ringer mode : " + selectedRingerMode);
+                    Log.d(TAG, "onItemSelected: Selected Ringer mode : " + selectedRingerMode);
                     if( ringerVolumeSeekBar != null && ringerVolumeText != null )
                     {
                         boolean isNormalModeSelected = selectedRingerMode.equalsIgnoreCase("Normal");
@@ -337,7 +337,7 @@ public class AddTriggerActivity extends AppCompatActivity implements CalendarDat
         switch( item.getItemId() )
         {
             case android.R.id.home:
-                Log.i(TAG, "onOptionsItemSelected: Back button selected");
+                Log.d(TAG, "onOptionsItemSelected: Back button selected");
                 setResult( RESULT_CANCELED );
                 finish();
                 break;

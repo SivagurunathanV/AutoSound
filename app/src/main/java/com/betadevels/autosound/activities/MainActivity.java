@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onGlobalLayout()
                 {
-                    Log.i(TAG, "From onGlobalLayout");
+                    Log.d(TAG, "From onGlobalLayout");
                     if(!deleteTourGuideCompleted && recyclerView.getChildCount() >= 1)
                     {
                         startDeleteTourGuide();
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
     private void startDeleteTourGuide()
     {
         View itemView = recyclerView.findViewHolderForLayoutPosition(0).itemView;
-        Log.i(TAG, Boolean.toString(itemView == null));
+        Log.d(TAG, Boolean.toString(itemView == null));
         ChainTourGuide newTriggerStep = ChainTourGuide.init( this )
                 .setToolTip(new ToolTip().setTitle("Created Trigger")
                         .setDescription("Triggers you have created will appear here. Click on a trigger to view its volume settings.").
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity
             {
                 int adapterPosition = viewHolder.getAdapterPosition();
 
-                Log.i(TAG, "onSwiped: Swiped Position : " + adapterPosition );
+                Log.d(TAG, "onSwiped: Swiped Position : " + adapterPosition );
                 deleteTriggerPosition = adapterPosition;
                 deleteAlertDialog.show();
             }
