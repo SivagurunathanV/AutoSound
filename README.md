@@ -3,7 +3,7 @@
 # AutoSound
 An Android Application to change Sound Profile Settings automatically at specified instances/time-periods.
 
-<a href="#">
+<a href="https://play.google.com/store/apps/details?id=com.betadevels.autosound&hl=en">
     <img alt="AutoSound on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" width="140" />
 </a>
 
