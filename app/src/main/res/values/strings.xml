@@ -31,7 +31,8 @@
     <string name="notification_icon">Notification Icon</string>
     <string name="main_tour_preference_key">com.betadevels.autosound.MAIN_TOUR_GUIDE</string>
     <string name="delete_tour_preference_key">com.betadevels.autosound.DELETE_TOUR_GUIDE</string>
-    <string name="action_delete_all">Delete All</string>
+    <string name="menu_action_delete_all_string">Delete All</string>
+    <string name="menu_action_about_string">About</string>
 
     <string-array name="ringer_modes">
         <item>Normal</item>

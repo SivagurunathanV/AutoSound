@@ -37,4 +37,7 @@ dependencies {
     compile ('com.github.worker8:tourguide:1.0.17-SNAPSHOT@aar'){
         transitive=true
     }
+    compile('com.mikepenz:aboutlibraries:5.9.6@aar') {
+        transitive = true
+    }
 }

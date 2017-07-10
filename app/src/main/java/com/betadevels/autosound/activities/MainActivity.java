@@ -39,6 +39,7 @@ import com.betadevels.autosound.adapters.TriggerCardsAdapter;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
 import com.betadevels.autosound.resources.Constants;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -196,6 +197,16 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_delete_all)
         {
             initDeleteAllAlertDialog();
+            return true;
+        }
+        else if(id == R.id.action_about)
+        {
+            new LibsBuilder()
+                    .withAboutIconShown( true )
+                    .withAboutVersionShown( true )
+                    .withAboutAppName("AutoSound")
+                    .withActivityTitle("About AutoSound")
+                    .start( this );
             return true;
         }
 
