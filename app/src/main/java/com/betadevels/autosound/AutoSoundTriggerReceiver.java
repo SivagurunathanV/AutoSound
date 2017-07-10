@@ -11,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.betadevels.autosound.resources.Constants;
-import com.betadevels.autosound.resources.Utilities;
+import com.betadevels.autosound.utils.Constants;
+import com.betadevels.autosound.utils.Utilities;
 
 public class AutoSoundTriggerReceiver extends BroadcastReceiver
 {
