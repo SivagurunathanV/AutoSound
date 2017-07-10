@@ -3,11 +3,9 @@ An Android Application to change Sound Profile Settings automatically at specifi
 
 
 ### Screenshots
-![Main text](/screenshots/1.png?raw=true "Main Activity")
-![Add text](/screenshots/2.png?raw=true "Add Trigger")
-![Time text](/screenshots/3.png?raw=true "Select Time")
-![Date text](/screenshots/4.png?raw=true "Select Date")
-![SmallNotif text](/screenshots/5.png?raw=true "Notification Small")
-![BigNotif text](/screenshots/6.png?raw=true "Notification Big")
-
 <img src="/screenshots/1.png?raw=true" height="400" alt="Main Activity" />
+<img src="/screenshots/2.png?raw=true" height="400" alt="Add Trigger" />
+<img src="/screenshots/3.png?raw=true" height="400" alt="Select Time" />
+<img src="/screenshots/4.png?raw=true" height="400" alt="Select Date" />
+<img src="/screenshots/5.png?raw=true" height="400" alt="Notification Small" />
+<img src="/screenshots/6.png?raw=true" height="400" alt="Notification Big" />
