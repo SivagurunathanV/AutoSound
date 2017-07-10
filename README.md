@@ -10,3 +10,4 @@ An Android Application to change Sound Profile Settings automatically at specifi
 ![SmallNotif text](/screenshots/5.png?raw=true "Notification Small")
 ![BigNotif text](/screenshots/6.png?raw=true "Notification Big")
 
+<img src="/screenshots/1.png?raw=true" height="400" alt="Main Activity" />
