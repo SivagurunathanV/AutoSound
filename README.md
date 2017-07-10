@@ -1,5 +1,5 @@
 [![API](https://img.shields.io/badge/API-17%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=17) 
-<a href="#">
+<br/><a href="#">
     <img alt="AutoSound on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" width="140" />
 </a>
 
