@@ -6,7 +6,7 @@ import android.widget.CheckBox;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.betadevels.autosound.resources.Constants;
+import com.betadevels.autosound.utils.Constants;
 
 import org.joda.time.LocalDateTime;
 

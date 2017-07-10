@@ -4,7 +4,7 @@ import android.widget.CheckBox;
 
 import com.activeandroid.query.Select;
 import com.betadevels.autosound.models.Trigger;
-import com.betadevels.autosound.resources.Constants;
+import com.betadevels.autosound.utils.Constants;
 
 import org.joda.time.LocalDateTime;
 

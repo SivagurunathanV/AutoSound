@@ -38,7 +38,7 @@ import com.betadevels.autosound.R;
 import com.betadevels.autosound.adapters.TriggerCardsAdapter;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
-import com.betadevels.autosound.resources.Constants;
+import com.betadevels.autosound.utils.Constants;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.lang.ref.WeakReference;

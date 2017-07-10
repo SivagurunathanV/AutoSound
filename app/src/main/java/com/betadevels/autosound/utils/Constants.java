@@ -1,4 +1,4 @@
-package com.betadevels.autosound.resources;
+package com.betadevels.autosound.utils;
 
 public class Constants
 {

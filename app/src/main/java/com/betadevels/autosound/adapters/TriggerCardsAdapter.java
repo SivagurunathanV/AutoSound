@@ -19,8 +19,8 @@ import com.betadevels.autosound.DAOs.TriggerInstanceDAO;
 import com.betadevels.autosound.R;
 import com.betadevels.autosound.models.Trigger;
 import com.betadevels.autosound.models.TriggerInstance;
-import com.betadevels.autosound.resources.Constants;
-import com.betadevels.autosound.resources.Utilities;
+import com.betadevels.autosound.utils.Constants;
+import com.betadevels.autosound.utils.Utilities;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
